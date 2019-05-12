@@ -29,6 +29,9 @@ int main(int argn, char* args[]) {
     //> Instantiate PersonDetector
     sysaster::person_detector = nullptr;
 
+    //>> Start the module
+    imgRequestor->require();
+
     std::cout << "Finish sysaster." << std::endl;
 
     return 0;
