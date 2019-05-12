@@ -1,6 +1,7 @@
 #ifndef _SET_JSON_PARSER_
 #define _SET_JSON_PARSER_
 
+#include <fstream>
 #include "extern/json.hpp"
 #include "Settings.h"
 
@@ -18,8 +19,14 @@ class JSONSettingsParser {
 
     public:
 
-        void parse(const std::string& text, Settings& settings) const {
-            auto j = json::parse(text);
+        void parse(const std::string& file_path, Settings& settings) const {
+
+            std::ifstream i {file_path};
+
+            json j;
+
+            i >> j;
+
             settings = j.get<Settings>();
         }
 };

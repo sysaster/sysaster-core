@@ -1,10 +1,12 @@
 #include <iostream>
 #include "sysaster/core.h"
+#include "sysaster/extra/raspberry/RaspcamImageSource.h"
+#include "sysaster/extra/yolo/YOLOv3PersonDetector.h"
 
 int main(int argn, char* args[]) {
 
     if (argn < 2) {
-        std::cout << "[sysaster ERROR] you must provide a settings file";
+        std::cout << "[sysaster ERROR] you must provide a settings file" << std::endl;
         return 1;
     }
 
@@ -15,7 +17,7 @@ int main(int argn, char* args[]) {
     parser.parse(file_path, *sysaster::settings);
 
     //> Instantiate ImageSource
-    std::shared_ptr<ImageSource> imgSource {nullptr};
+    std::shared_ptr<ImageSource> imgSource = std::make_shared<RaspcamImageSource>();
 
     //> Instantiate ConnectionThreadDispatcher
     sysaster::connection_dispatcher = std::make_shared<ConnectionThreadDispatcher>();
@@ -27,7 +29,7 @@ int main(int argn, char* args[]) {
     std::shared_ptr<ImageRequestor> imgRequestor = std::make_shared<ImageRequestor>(imgSource, imgThreDispat);
 
     //> Instantiate PersonDetector
-    sysaster::person_detector = nullptr;
+    sysaster::person_detector = std::make_shared<YOLOv3PersonDetector>();
 
     //>> Start the module
     imgRequestor->require();
