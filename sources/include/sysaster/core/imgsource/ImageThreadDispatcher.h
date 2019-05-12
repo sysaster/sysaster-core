@@ -42,7 +42,10 @@ class ImageThreadDispatcher {
                     continue;
                else {
                     auto img = imageQueue.pop()->get_data();
-                    detectorPool.push(DetectionThread{nullptr, nullptr}, std::ref(img));
+                    detectorPool.push(DetectionThread{
+                            sysaster::person_detector, 
+                            sysaster::connection_dispatcher
+                    }, std::ref(img));
                }
             } 
         }

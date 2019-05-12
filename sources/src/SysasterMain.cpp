@@ -18,7 +18,7 @@ int main(int argn, char* args[]) {
     std::shared_ptr<ImageSource> imgSource {nullptr};
 
     //> Instantiate ConnectionThreadDispatcher
-    std::shared_ptr<ConnectionThreadDispatcher> connThreDispat = std::make_shared<ConnectionThreadDispatcher>();
+    sysaster::connection_dispatcher = std::make_shared<ConnectionThreadDispatcher>();
 
     //> Instantiate ImageThreadDispatcher
     std::shared_ptr<ImageThreadDispatcher> imgThreDispat = std::make_shared<ImageThreadDispatcher>();
@@ -27,7 +27,7 @@ int main(int argn, char* args[]) {
     std::shared_ptr<ImageRequestor> imgRequestor = std::make_shared<ImageRequestor>(imgSource, imgThreDispat);
 
     //> Instantiate PersonDetector
-    std::shared_ptr<PersonDetector> personDetector {nullptr};
+    sysaster::person_detector = nullptr;
 
     std::cout << "Finish sysaster." << std::endl;
 
