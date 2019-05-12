@@ -1,0 +1,3 @@
+[submodule "sources/extern/libcds"]
+	path = sources/extern/libcds
+	url = https://github.com/khizmax/libcds

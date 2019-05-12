@@ -9,6 +9,8 @@ set(YAML_CPP_BUILD_TESTS CACHE BOOL OFF)
 # deps
 #-----------------------------------------#
 
+find_package(OpenCV REQUIRED)
+
 # define build types and configurations
 # --------------------------------------- #
 if (CMAKE_CONFIGURATION_TYPES)
@@ -32,13 +34,40 @@ set(CMAKE_TEST_POSTFIX _tests)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+
+# submodules
+# --------------------------------------- #
+find_package(Git QUIET)
+if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
+# Update submodules as needed
+    option(GIT_SUBMODULE "Check submodules during build" ON)
+    if(GIT_SUBMODULE)
+        message(STATUS "Submodule update")
+        execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+                        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                        RESULT_VARIABLE GIT_SUBMOD_RESULT)
+        if(NOT GIT_SUBMOD_RESULT EQUAL "0")
+            message(FATAL_ERROR "git submodule update --init failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
+        endif()
+    endif()
+endif()
+
+if(NOT EXISTS "${PROJECT_SOURCE_DIR}/extern/libcds/CMakeLists.txt")
+    message(FATAL_ERROR "The submodules were not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
+endif()
+
+add_subdirectory(extern/libcds)
+
+
+
 # libraries
 # --------------------------------------- #
 
 # executables
 # --------------------------------------- #
 add_executable(sysaster src/SysasterMain.cpp)
-target_include_directories(sysaster PUBLIC include)
+target_link_libraries(sysaster PUBLIC ${OpenCV_LIBS} PRIVATE cds)
+target_include_directories(sysaster PUBLIC include PUBLIC ${OpenCV_INCLUDE_DIRS} PRIVATE extern/libcds)
 
 # test definitions
 # use googletest framework
