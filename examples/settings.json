@@ -1,0 +1,13 @@
+{
+    "image_source": {
+        "interval": 1
+    },
+    "detection": {
+        "pool_size": 1
+    },
+    "connection": {
+        "server_ip": "127.0.0.1",
+        "server_port": 8980,
+        "pool_size": 5
+    }
+}

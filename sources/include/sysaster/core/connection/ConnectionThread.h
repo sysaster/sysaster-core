@@ -11,6 +11,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include "extern/json.hpp"
+#include "sysaster/core/settings/Settings.h"
+#include "sysaster/common.h"
 
 /**
  * Wrapper for the function that actually sends a data via
@@ -18,6 +20,10 @@
  * */
 using nlohmann::json;
 class ConnectionThread {
+
+    private:
+
+        std::shared_ptr<Settings> settings = sysaster::settings;
 
     public:
 
@@ -33,7 +39,7 @@ class ConnectionThread {
                 const DetectionResultData& data, 
                 ClientInfoQueueT& connPool){
 
-            // if connection not stablished
+            // if connection was stablished
             if (connection.fd == 0) {
                 if ((connection.fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
                     printf("\n Socket creation error \n");
@@ -41,6 +47,18 @@ class ConnectionThread {
                 }
 
                 fcntl(connection.fd, F_SETFL, fcntl(connection.fd, F_GETFL, 0) | O_NONBLOCK);
+
+                memset(&connection.addr, '0', sizeof(connection.addr)); 
+               
+                connection.addr.sin_family = AF_INET; 
+                connection.addr.sin_port = htons(settings->server_port); 
+                   
+                // Convert IPv4 and IPv6 addresses from text to binary form 
+                if(inet_pton(AF_INET, settings->server_ip.c_str(), &connection.addr.sin_addr)<=0)  
+                { 
+                    printf("\nInvalid address/ Address not supported \n"); 
+                    return; 
+                }  
 
                 if (connect(connection.fd, (struct sockaddr *) &connection.addr, connection.addr_len) < 0
                 && (errno == EALREADY

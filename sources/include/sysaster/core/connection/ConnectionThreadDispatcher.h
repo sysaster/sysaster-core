@@ -7,6 +7,8 @@
 #include "ClientInfo.h"
 #include "ConnectionThread.h"
 #include "extern/ctpl_stl.h"
+#include "sysaster/core/settings/Settings.h"
+#include "sysaster/common.h"
 
 /**
  * Dispatcher for client connections,
@@ -18,9 +20,11 @@ class ConnectionThreadDispatcher {
 
     private:
 
+        std::shared_ptr<Settings> settings = sysaster::settings;
+
         ResultDataQueueT dataQueue;
         ClientInfoQueueT connectionPool;
-        ctpl::thread_pool connThreadPool {10};
+        ctpl::thread_pool connThreadPool { settings->connection_pool_size };
 
     public:
 

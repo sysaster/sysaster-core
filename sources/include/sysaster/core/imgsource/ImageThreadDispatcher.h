@@ -5,6 +5,8 @@
 #include "CdsImageData.h"
 #include "extern/ctpl_stl.h"
 #include "sysaster/core/detector/DetectionThread.h"
+#include "sysaster/core/settings/Settings.h"
+#include "sysaster/common.h"
 
 /**
  * Enqueue images and dispatch them
@@ -16,8 +18,10 @@ class ImageThreadDispatcher {
 
     private:
 
+        std::shared_ptr<Settings> settings = sysaster::settings;
+
         ImageQueueT imageQueue;
-        ctpl::thread_pool detectorPool {10};
+        ctpl::thread_pool detectorPool { settings->detection_pool_size };
 
     public:
 

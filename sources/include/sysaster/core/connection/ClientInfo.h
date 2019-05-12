@@ -14,7 +14,7 @@ struct ClientInfo {
     ClientInfo() {}
     ~ClientInfo() {}
 
-    struct sockaddr_storage addr;
+    struct sockaddr_in addr;
     socklen_t addr_len;
     int fd;
 };

@@ -3,6 +3,7 @@
 
 #include "ImageThreadDispatcher.h"
 #include "ImageSource.h"
+#include "sysaster/common.h"
 #include <chrono>
 
 /**
@@ -17,6 +18,8 @@ class ImageRequestor {
         std::shared_ptr<ImageSource> image_source;
 
         std::shared_ptr<ImageThreadDispatcher> image_dispatcher;
+
+        std::shared_ptr<Settings> settings = sysaster::settings;
 
     public:
 
@@ -33,7 +36,7 @@ class ImageRequestor {
             while(true) {
                 image_source->get(img);
                 image_dispatcher->require_detection(img);
-                std::this_thread::sleep_for (std::chrono::seconds(1));
+                std::this_thread::sleep_for (std::chrono::seconds(settings->image_source_interval));
             }
         }
 };
