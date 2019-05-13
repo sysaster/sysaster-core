@@ -7,7 +7,7 @@
     },
     "connection": {
         "server_ip": "127.0.0.1",
-        "server_port": 8980,
+        "server_port": 5867,
         "pool_size": 5
     }
 }
