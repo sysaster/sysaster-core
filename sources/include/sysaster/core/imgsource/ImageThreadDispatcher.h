@@ -2,11 +2,11 @@
 #define _IMG_THREAD_DISP_
 
 #include "opencv2/core/mat.hpp"
-#include "CdsImageData.h"
 #include "extern/ctpl_stl.h"
 #include "sysaster/core/detector/DetectionThread.h"
 #include "sysaster/core/settings/Settings.h"
 #include "sysaster/common.h"
+#include <boost/lockfree/spsc_queue.hpp>
 
 /**
  * Enqueue images and dispatch them
@@ -19,8 +19,7 @@ class ImageThreadDispatcher {
     private:
 
         std::shared_ptr<Settings> settings = sysaster::settings;
-
-        ImageQueueT imageQueue;
+        boost::lockfree::spsc_queue<cv::Mat> imageQueue {100};
         ctpl::thread_pool detectorPool { settings->detection_pool_size };
 
     public:
@@ -36,26 +35,27 @@ class ImageThreadDispatcher {
          * @param img the image
          * */
         void require_detection(const cv::Mat& img) {
-            ImageNode imgnode {img};
-            imageQueue.enqueue(imgnode); 
+            imageQueue.push(img);
         }
 
+        /**
+         * Main dispatcher loop. Creates detection
+         * jobs.
+         * */
         void operator()() {
-            cds::threading::Manager::attachThread();
             while(true) {
                if (imageQueue.empty()) {
                     continue;
                } else {
-                    std::cout << "a" << std::endl;
-                    if(imageQueue.dequeue() != nullptr);//->get_data();
-                    //cv::Mat img {imageQueue.pop()->get_data()};
-                    //detectorPool.push(DetectionThread{
-                    //        sysaster::person_detector, 
-                    //        sysaster::connection_dispatcher
-                    //}, img);
+                    cv::Mat & img = imageQueue.front();
+                    detectorPool.push(DetectionThread{
+                            sysaster::person_detector, 
+                            sysaster::connection_dispatcher
+                    }, img);
+                    imageQueue.pop();
                }
+               std::this_thread::sleep_for (std::chrono::seconds(settings->image_source_interval));
             } 
-            cds::threading::Manager::detachThread(); 
         }
 };
 

@@ -7,6 +7,13 @@
 
 int main(int argn, char* args[]) {
 
+    cds::Initialize();
+    // Initialize Hazard Pointer singleton
+    cds::gc::HP hpGC;
+    // If main thread uses lock-free containers
+    // the main thread should be attached to libcds infrastructure
+    cds::threading::Manager::attachThread();
+
     if (argn < 2) {
         std::cout << "[sysaster ERROR] you must provide a settings file" << std::endl;
         return 1;
@@ -18,19 +25,11 @@ int main(int argn, char* args[]) {
     JSONSettingsParser parser;
     parser.parse(file_path, *sysaster::settings);
 
-    cds::Initialize();
-
-    // Initialize Hazard Pointer singleton
-    cds::gc::HP hpGC;
-    // If main thread uses lock-free containers
-    // the main thread should be attached to libcds infrastructure
-    cds::threading::Manager::attachThread();
-
     //> Instantiate ImageSource
     std::shared_ptr<ImageSource> imgSource = std::make_shared<RaspcamImageSource>();
 
     //> Instantiate ConnectionThreadDispatcher
-    sysaster::connection_dispatcher = std::make_shared<ConnectionThreadDispatcher>();
+    //sysaster::connection_dispatcher = std::make_shared<ConnectionThreadDispatcher>();
 
     //> Instantiate ImageThreadDispatcher
     std::shared_ptr<ImageThreadDispatcher> imgThreDispat = std::make_shared<ImageThreadDispatcher>();
@@ -42,12 +41,12 @@ int main(int argn, char* args[]) {
     sysaster::person_detector = std::make_shared<YOLOv3PersonDetector>();
 
     //> Start connection dispatcher thread
-    std::thread conn_disp_thread {std::ref(*sysaster::connection_dispatcher)};
-    conn_disp_thread.detach();
+    //std::thread conn_disp_thread {std::ref(*sysaster::connection_dispatcher)};
+    //conn_disp_thread.detach();
 
     //> Start image dispatcher thread
     std::thread img_thre_dispatcher {std::ref(*imgThreDispat)};
-    img_thre_dispatcher.detach();
+    //img_thre_dispatcher.detach();
 
     //>> Start the module
     imgRequestor->require();

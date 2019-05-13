@@ -10,6 +10,7 @@ set(YAML_CPP_BUILD_TESTS CACHE BOOL OFF)
 #-----------------------------------------#
 
 find_package(OpenCV REQUIRED)
+find_package(Boost REQUIRED)
 
 # define build types and configurations
 # --------------------------------------- #

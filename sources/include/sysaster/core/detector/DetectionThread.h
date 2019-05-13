@@ -22,14 +22,9 @@ class DetectionThread {
 
         DetectionThread(const decltype(person_detector)& person_detector,
                 const decltype(connection_dispatcher)& connection_dispatcher) 
-            : person_detector {person_detector}, connection_dispatcher {connection_dispatcher} { 
-                
-            cds::threading::Manager::attachThread();
-        }
+            : person_detector {person_detector}, connection_dispatcher {connection_dispatcher} {}
 
-        ~DetectionThread() {
-            cds::threading::Manager::detachThread(); 
-        }
+        ~DetectionThread() {}
 
         /**
          * Performs detection and asks for sending the

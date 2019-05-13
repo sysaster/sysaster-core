@@ -10,6 +10,8 @@
 #include "sysaster/core/settings/Settings.h"
 #include "sysaster/common.h"
 
+#include <boost/lockfree/queue.hpp>
+
 /**
  * Dispatcher for client connections,
  * aiming at sending detection data.
@@ -23,7 +25,9 @@ class ConnectionThreadDispatcher {
         std::shared_ptr<Settings> settings = sysaster::settings;
 
         ResultDataQueueT dataQueue;
-        ClientInfoQueueT connectionPool;
+
+        boost::lockfree::queue<ClientInfo> connectionPool {settings->connection_pool_size};
+
         ctpl::thread_pool connThreadPool { settings->connection_pool_size };
 
     public:
@@ -38,7 +42,7 @@ class ConnectionThreadDispatcher {
 
             for (auto i {0}; i < settings->connection_pool_size; ++i) {
                 auto clin = ClientInfoNode{ClientInfo{}};
-                connectionPool.enqueue(clin);
+                connectionPool.push(ClientInfo{});
             }
         }
 
@@ -63,14 +67,15 @@ class ConnectionThreadDispatcher {
          * */
         void operator()() {
             while (true) {
-                if (connectionPool.size() == 0) 
+                if (connectionPool.empty()) 
                     continue;
                 DetectionResultData data;
                 if (!next(data))
                     continue;
-                ClientInfo conn = connectionPool.pop()->get_data();
+                ClientInfo conn; 
+                connectionPool.pop(conn);
                 connThreadPool.push(ConnectionThread(), 
-                        std::ref(conn), std::ref(data), std::ref(this->connectionPool));
+                        conn, std::ref(data), std::ref(this->connectionPool));
             } 
         }
 };

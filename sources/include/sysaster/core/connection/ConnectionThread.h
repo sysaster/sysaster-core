@@ -13,6 +13,7 @@
 #include "extern/json.hpp"
 #include "sysaster/core/settings/Settings.h"
 #include "sysaster/common.h"
+#include <boost/lockfree/queue.hpp>
 
 /**
  * Wrapper for the function that actually sends a data via
@@ -27,12 +28,8 @@ class ConnectionThread {
 
     public:
 
-        ConnectionThread() {
-            cds::threading::Manager::attachThread();
-        }
-        ~ConnectionThread() {
-            cds::threading::Manager::detachThread();
-        }
+        ConnectionThread() {}
+        ~ConnectionThread() {}
 
         /**
          * Called to send the data.
@@ -41,8 +38,9 @@ class ConnectionThread {
                 int id, 
                 ClientInfo& connection, 
                 const DetectionResultData& data, 
-                ClientInfoQueueT& connPool){
+                boost::lockfree::queue<ClientInfo>& connPool){
 
+            cds::threading::Manager::attachThread();
             // if connection was stablished
             if (connection.fd == 0) {
                 if ((connection.fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
@@ -80,8 +78,8 @@ class ConnectionThread {
             send(connection.fd, message.c_str(), message.length(), 0);
 
             // repopulate connection pool
-            ClientInfoNode connNode {connection};
-            connPool.enqueue(connNode); 
+            connPool.push(connection); 
+            cds::threading::Manager::detachThread();
         }
 };
 
