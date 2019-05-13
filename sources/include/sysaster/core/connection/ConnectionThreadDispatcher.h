@@ -28,6 +28,20 @@ class ConnectionThreadDispatcher {
 
     public:
 
+        ~ConnectionThreadDispatcher() {
+            cds::threading::Manager::detachThread(); 
+        }
+
+        ConnectionThreadDispatcher() {
+
+            cds::threading::Manager::attachThread();
+
+            for (auto i {0}; i < settings->connection_pool_size; ++i) {
+                auto clin = ClientInfoNode{ClientInfo{}};
+                connectionPool.enqueue(clin);
+            }
+        }
+
         void require_send(std::vector<DetectionResultData>& data) {
             for (DetectionResultData& d : data) {
                 DetectionResultDataNode n {d};

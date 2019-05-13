@@ -27,8 +27,12 @@ class ConnectionThread {
 
     public:
 
-        ConnectionThread() {}
-        ~ConnectionThread() {}
+        ConnectionThread() {
+            cds::threading::Manager::attachThread();
+        }
+        ~ConnectionThread() {
+            cds::threading::Manager::detachThread();
+        }
 
         /**
          * Called to send the data.

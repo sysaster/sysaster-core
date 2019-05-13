@@ -21,11 +21,7 @@ struct DetectionResultData {
 
     ~DetectionResultData() {}
 
-    DetectionResultData();
-    DetectionResultData(decltype(person_found));
-    DetectionResultData(decltype(bounding_box));
-    DetectionResultData(decltype(bounding_box), decltype(frame_clip));
-    DetectionResultData(decltype(bounding_box), decltype(frame_clip), decltype(person_found));
+    DetectionResultData() {}
 };
 
 void to_json(json& j, const DetectionResultData& d) {

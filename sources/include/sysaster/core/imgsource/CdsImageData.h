@@ -13,8 +13,7 @@ struct ImageNode: public ci::basket_queue::node< hp_gc >
 {
     cv::Mat data;
 
-    ImageNode() {}
-    ImageNode(const cv::Mat& data) : data {data} {}
+    ImageNode(cv::Mat data) : data {data} {}
 
     inline decltype(data) get_data() { return data; }
 };

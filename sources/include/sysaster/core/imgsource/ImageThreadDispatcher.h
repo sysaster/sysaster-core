@@ -25,6 +25,10 @@ class ImageThreadDispatcher {
 
     public:
 
+        ~ImageThreadDispatcher() {}
+
+        ImageThreadDispatcher() {}
+
         /**
          * Require the detection for an
          * image.
@@ -37,17 +41,21 @@ class ImageThreadDispatcher {
         }
 
         void operator()() {
+            cds::threading::Manager::attachThread();
             while(true) {
-               if (imageQueue.size() == 0)
+               if (imageQueue.empty()) {
                     continue;
-               else {
-                    auto img = imageQueue.pop()->get_data();
-                    detectorPool.push(DetectionThread{
-                            sysaster::person_detector, 
-                            sysaster::connection_dispatcher
-                    }, std::ref(img));
+               } else {
+                    std::cout << "a" << std::endl;
+                    if(imageQueue.dequeue() != nullptr);//->get_data();
+                    //cv::Mat img {imageQueue.pop()->get_data()};
+                    //detectorPool.push(DetectionThread{
+                    //        sysaster::person_detector, 
+                    //        sysaster::connection_dispatcher
+                    //}, img);
                }
             } 
+            cds::threading::Manager::detachThread(); 
         }
 };
 
