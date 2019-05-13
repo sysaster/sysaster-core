@@ -2,17 +2,8 @@
 #include "sysaster/core.h"
 #include "sysaster/extra/raspberry/RaspcamImageSource.h"
 #include "sysaster/extra/yolo/YOLOv3PersonDetector.h"
-#include "cds/init.h"
-#include "cds/gc/hp.h"
 
 int main(int argn, char* args[]) {
-
-    cds::Initialize();
-    // Initialize Hazard Pointer singleton
-    cds::gc::HP hpGC;
-    // If main thread uses lock-free containers
-    // the main thread should be attached to libcds infrastructure
-    cds::threading::Manager::attachThread();
 
     if (argn < 2) {
         std::cout << "[sysaster ERROR] you must provide a settings file" << std::endl;
@@ -52,8 +43,6 @@ int main(int argn, char* args[]) {
     imgRequestor->require();
 
     std::cout << "Finish sysaster." << std::endl;
-
-    cds::Terminate();
 
     return 0;
 }
