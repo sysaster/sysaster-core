@@ -21,7 +21,7 @@ class PersonDetector {
          * @param image     image to be analysed
          * @param results   detection results 
          * */
-        virtual void detect(const cv::Mat image, const std::vector<DetectionResultData>& results) const = 0;
+        virtual void detect(const cv::Mat image, std::vector<DetectionResultData>& results) const = 0;
 
 };
 

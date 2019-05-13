@@ -2,6 +2,7 @@
 #define _YOLO_PERSON_DETECTOR_
 
 #include "sysaster/core/detector/PersonDetector.h"
+#include "sysaster/core/detector/DetectionResultData.h"
 
 /**
  * Interface for a person detector.
@@ -18,8 +19,10 @@ class YOLOv3PersonDetector : public PersonDetector {
          * @param image     image to be analysed
          * @param results   detection results 
          * */
-        void detect(const cv::Mat image, const std::vector<DetectionResultData>& results) const override {
+        void detect(const cv::Mat image, std::vector<DetectionResultData>& results) const override {
             std::cout << "called yolov3 detector" << std::endl;
+
+            results.push_back(DetectionResultData{});
         }
 
 };

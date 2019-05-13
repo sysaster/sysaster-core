@@ -14,12 +14,10 @@ using nlohmann::json;
 
 struct DetectionResultData {
     
-    cv::Rect bounding_box;
-    cv::Mat frame_clip;
+    //cv::Rect bounding_box;
+    //cv::Mat frame_clip;
     bool person_found {false};
     long time_ms;
-
-    ~DetectionResultData() {}
 
     DetectionResultData() {}
 };

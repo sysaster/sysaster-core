@@ -54,7 +54,6 @@ class ImageThreadDispatcher {
                     }, img);
                     imageQueue.pop();
                }
-               std::this_thread::sleep_for (std::chrono::seconds(settings->image_source_interval));
             } 
         }
 };

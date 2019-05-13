@@ -1,7 +1,6 @@
 #ifndef _CON_THREAD_
 #define _CON_THREAD_
 
-#include "CdsClientInfoDataTypes.h"
 #include <stdio.h> 
 #include <sys/socket.h> 
 #include <stdlib.h> 
@@ -40,11 +39,13 @@ class ConnectionThread {
                 const DetectionResultData& data, 
                 boost::lockfree::queue<ClientInfo>& connPool){
 
-            cds::threading::Manager::attachThread();
+            std::cout << "ask to send message" << std::endl;
+
             // if connection was stablished
             if (connection.fd == 0) {
                 if ((connection.fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
                     printf("\n Socket creation error \n");
+                    connPool.push(ClientInfo{}); 
                     return;
                 }
 
@@ -59,13 +60,16 @@ class ConnectionThread {
                 if(inet_pton(AF_INET, settings->server_ip.c_str(), &connection.addr.sin_addr)<=0)  
                 { 
                     printf("\nInvalid address/ Address not supported \n"); 
+                    connPool.push(ClientInfo{}); 
                     return; 
                 }  
 
-                if (connect(connection.fd, (struct sockaddr *) &connection.addr, connection.addr_len) < 0
-                && (errno == EALREADY
-                ||  errno == EINPROGRESS)) {
+                if (connect(connection.fd, (struct sockaddr *) &connection.addr, connection.addr_len) < 0)
+                //&& (errno == EALREADY
+                //||  errno == EINPROGRESS)) {
+                {
                     printf("\nConnection Failed \n"); 
+                    connPool.push(ClientInfo{}); 
                     return; 
                 } 
             }
@@ -75,11 +79,16 @@ class ConnectionThread {
             std::string message = json_message.dump();
 
             // send
-            send(connection.fd, message.c_str(), message.length(), 0);
+            if (send(connection.fd, message.c_str(), message.length(), 0) == -1) {
+                std::cout << "send error" << std::endl;
+                connPool.push(ClientInfo{}); 
+                return;
+            }
+
+            std::cout << "sent" << std::endl;
 
             // repopulate connection pool
             connPool.push(connection); 
-            cds::threading::Manager::detachThread();
         }
 };
 

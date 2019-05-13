@@ -2,15 +2,12 @@
 #define _CONN_THREAD_DISPATCHER_
 
 #include "sysaster/core/detector/DetectionResultData.h"
-#include "sysaster/core/detector/CdsResultDataTypes.h"
-#include "CdsClientInfoDataTypes.h"
 #include "ClientInfo.h"
 #include "ConnectionThread.h"
-#include "extern/ctpl_stl.h"
 #include "sysaster/core/settings/Settings.h"
 #include "sysaster/common.h"
-
 #include <boost/lockfree/queue.hpp>
+#include "extern/ctpl_stl.h"
 
 /**
  * Dispatcher for client connections,
@@ -24,7 +21,7 @@ class ConnectionThreadDispatcher {
 
         std::shared_ptr<Settings> settings = sysaster::settings;
 
-        ResultDataQueueT dataQueue;
+        boost::lockfree::queue<DetectionResultData> dataQueue {100};
 
         boost::lockfree::queue<ClientInfo> connectionPool {settings->connection_pool_size};
 
@@ -32,32 +29,22 @@ class ConnectionThreadDispatcher {
 
     public:
 
-        ~ConnectionThreadDispatcher() {
-            cds::threading::Manager::detachThread(); 
-        }
+        ~ConnectionThreadDispatcher() {}
 
         ConnectionThreadDispatcher() {
-
-            cds::threading::Manager::attachThread();
-
-            for (auto i {0}; i < settings->connection_pool_size; ++i) {
-                auto clin = ClientInfoNode{ClientInfo{}};
+            for (auto i {0}; i < settings->connection_pool_size; ++i)
                 connectionPool.push(ClientInfo{});
-            }
         }
 
         void require_send(std::vector<DetectionResultData>& data) {
-            for (DetectionResultData& d : data) {
-                DetectionResultDataNode n {d};
-                dataQueue.enqueue(n);
-            }
+            for (DetectionResultData& d : data)
+                dataQueue.push(d);
         }
 
         bool next(DetectionResultData & data) {
-            if (dataQueue.size() == 0)
+            if (dataQueue.empty())
                 return false;
-            else
-                data = dataQueue.pop()->get_data();
+            dataQueue.pop(data);
             return true;
         }
 
