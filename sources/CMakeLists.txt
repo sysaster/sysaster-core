@@ -59,7 +59,7 @@ endif()
 # executables
 # --------------------------------------- #
 add_executable(sysaster src/SysasterMain.cpp)
-target_link_libraries(sysaster PUBLIC ${OpenCV_LIBS})
+target_link_libraries(sysaster PUBLIC ${OpenCV_LIBS} PUBLIC restclient-cpp)
 target_include_directories(sysaster PUBLIC include PUBLIC ${OpenCV_INCLUDE_DIRS})
 
 # test definitions

@@ -13,6 +13,7 @@ void from_json(const json& j, Settings& s) {
     s.server_port = j["connection"]["server_port"];
     s.server_ip = j["connection"]["server_ip"];
     s.image_source_interval = j["image_source"]["interval"];
+    s.server_endpoint = j["connection"]["server_endpoint"];
 }
 
 class JSONSettingsParser {

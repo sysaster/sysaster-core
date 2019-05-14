@@ -12,15 +12,7 @@
  * */
 using nlohmann::json;
 
-struct DetectionResultData {
-    
-    //cv::Rect bounding_box;
-    //cv::Mat frame_clip;
-    bool person_found {false};
-    long time_ms;
-
-    DetectionResultData() {}
-};
+struct DetectionResultData;
 
 void to_json(json& j, const DetectionResultData& d) {
     j = json{
@@ -37,4 +29,18 @@ void from_json(const json& j, DetectionResultData& d) {
 
 }
 
+struct DetectionResultData {
+    
+    //cv::Rect bounding_box;
+    //cv::Mat frame_clip;
+    bool person_found {false};
+    long time_ms;
+
+    DetectionResultData() {}
+
+    std::string to_json() const {
+        json j = *this;
+        return j.dump();
+    }
+};
 #endif

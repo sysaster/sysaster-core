@@ -1,6 +1,6 @@
 {
     "image_source": {
-        "interval": 1
+        "interval": 3
     },
     "detection": {
         "pool_size": 1
@@ -8,6 +8,7 @@
     "connection": {
         "server_ip": "127.0.0.1",
         "server_port": 5867,
+        "server_endpoint": "http://127.0.0.1:5468",
         "pool_size": 5
     }
 }

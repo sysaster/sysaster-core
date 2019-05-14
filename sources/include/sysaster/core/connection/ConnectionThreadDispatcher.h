@@ -8,6 +8,8 @@
 #include "sysaster/common.h"
 #include <boost/lockfree/queue.hpp>
 #include "extern/ctpl_stl.h"
+#include "restclient-cpp/connection.h"
+#include "restclient-cpp/restclient.h"
 
 /**
  * Dispatcher for client connections,
@@ -25,15 +27,24 @@ class ConnectionThreadDispatcher {
 
         boost::lockfree::queue<ClientInfo> connectionPool {settings->connection_pool_size};
 
+        boost::lockfree::queue<RestClient::Connection*> restConnPool {settings->connection_pool_size};
+
         ctpl::thread_pool connThreadPool { settings->connection_pool_size };
 
     public:
 
-        ~ConnectionThreadDispatcher() {}
+        ~ConnectionThreadDispatcher() {
+            RestClient::disable();
+        }
 
         ConnectionThreadDispatcher() {
+
+            RestClient::init();
+
             for (auto i {0}; i < settings->connection_pool_size; ++i)
                 connectionPool.push(ClientInfo{});
+            for (auto i {0}; i < settings->connection_pool_size; ++i)
+                restConnPool.push(new RestClient::Connection(settings->server_endpoint));
         }
 
         void require_send(std::vector<DetectionResultData>& data) {
@@ -54,15 +65,15 @@ class ConnectionThreadDispatcher {
          * */
         void operator()() {
             while (true) {
-                if (connectionPool.empty()) 
+                if (restConnPool.empty()) 
                     continue;
                 DetectionResultData data;
                 if (!next(data))
                     continue;
-                ClientInfo conn; 
-                connectionPool.pop(conn);
+                RestClient::Connection* conn;
+                restConnPool.pop(conn);
                 connThreadPool.push(ConnectionThread(), 
-                        conn, std::ref(data), std::ref(this->connectionPool));
+                        conn, std::ref(data), std::ref(this->restConnPool));
             } 
         }
 };

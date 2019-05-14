@@ -9,6 +9,7 @@ struct Settings {
     int connection_pool_size {1};
     size_t server_port;
     std::string server_ip;
+    std::string server_endpoint;
     int image_source_interval {1};
 };
 

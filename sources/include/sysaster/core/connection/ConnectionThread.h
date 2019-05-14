@@ -13,6 +13,8 @@
 #include "sysaster/core/settings/Settings.h"
 #include "sysaster/common.h"
 #include <boost/lockfree/queue.hpp>
+#include "restclient-cpp/connection.h"
+#include "restclient-cpp/restclient.h"
 
 /**
  * Wrapper for the function that actually sends a data via
@@ -30,16 +32,44 @@ class ConnectionThread {
         ConnectionThread() {}
         ~ConnectionThread() {}
 
+
         /**
          * Called to send the data.
          * */
         void operator()(
+                int id, 
+                RestClient::Connection* connection,
+                const DetectionResultData& data, 
+                boost::lockfree::queue<RestClient::Connection*>& connPool){
+        
+            std::cout << "asked for rest connection" << std::endl;
+
+            RestClient::Response resp = connection->post("/detections/person", data.to_json());
+
+            if (resp.code == -1) {
+                std::cout << "[sysaster ERROR] fail to post detection data" << std::endl;
+            } else if (resp.code == 200) {
+                std::cout << "[sysaster SUCCESS] posted detection data" << std::endl;
+            } else {
+                std::cout << "[sysaster ERROR] unknown REST connection behaviour" << std::endl;
+            }
+
+            connPool.push(connection);
+        }
+
+        /**
+         * Called to send the data.
+         * */
+        /*void operator()(
                 int id, 
                 ClientInfo& connection, 
                 const DetectionResultData& data, 
                 boost::lockfree::queue<ClientInfo>& connPool){
 
             std::cout << "ask to send message" << std::endl;
+
+
+            //conn->post("/detections/person", data.json());
 
             // if connection was stablished
             if (connection.fd == 0) {
@@ -89,7 +119,7 @@ class ConnectionThread {
 
             // repopulate connection pool
             connPool.push(connection); 
-        }
+        }*/
 };
 
 #endif
