@@ -12,35 +12,53 @@
  * */
 using nlohmann::json;
 
-struct DetectionResultData;
-
-void to_json(json& j, const DetectionResultData& d) {
-    j = json{
-        {"bounding_box", 
-            {
-                {"x", 0},
-                {"y", 0}
-            }
-        },
-    };
-}
-
-void from_json(const json& j, DetectionResultData& d) {
-
-}
-
 struct DetectionResultData {
     
-    //cv::Rect bounding_box;
-    //cv::Mat frame_clip;
-    bool person_found {false};
+    float x;
+    float y;
+    float width {3};
+    float height {3};
+    float latitude;
+    float longitude;
     long time_ms;
+    char clipped_image[900];
 
     DetectionResultData() {}
 
-    std::string to_json() const {
-        json j = *this;
-        return j.dump();
-    }
+    DetectionResultData(const cv::Mat& clip) {}
+
+    std::string to_json() const;
 };
+
+void to_json(json& j, const DetectionResultData& d) {
+    j = json{
+            {"bounding_box", 
+                {
+                    {"x", d.x},
+                    {"y", d.y},
+                    {"w", d.width},
+                    {"h", d.height}
+                }
+            },
+            {"time_ms", d.time_ms},
+            {"latitude", d.latitude},
+            {"longitude", d.longitude},
+        };
+
+    if (d.clipped_image != nullptr) {
+        std::string clip = "";
+        for (int i {0}; i < d.width * d.height; ++i) {
+            clip += std::to_string(d.clipped_image[i]);
+        }
+        j["clipped_image"] = clip;
+    } else
+        j["clipped_image"] = "aaaaaaaaaa";
+}
+
+void from_json(const json& j, DetectionResultData& d) { /*TODO*/ }
+
+std::string DetectionResultData::to_json() const {
+    json j = *this;
+    return j.dump();
+}
 #endif

@@ -8,7 +8,6 @@ class RaspcamImageSource : public ImageSource {
     public:
 
         void get(cv::Mat& image) const override {
-            std::cout << "called img get" << std::endl;
             image = cv::Mat(30, 30, CV_16SC3);
         }
 };

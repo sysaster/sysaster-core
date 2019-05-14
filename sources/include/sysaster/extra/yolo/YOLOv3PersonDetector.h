@@ -3,6 +3,7 @@
 
 #include "sysaster/core/detector/PersonDetector.h"
 #include "sysaster/core/detector/DetectionResultData.h"
+#include "opencv2/imgcodecs.hpp"
 
 /**
  * Interface for a person detector.
@@ -20,9 +21,14 @@ class YOLOv3PersonDetector : public PersonDetector {
          * @param results   detection results 
          * */
         void detect(const cv::Mat image, std::vector<DetectionResultData>& results) const override {
-            std::cout << "called yolov3 detector" << std::endl;
+            DetectionResultData r;
+            r.height = image.rows; 
+            r.width = image.cols; 
 
-            results.push_back(DetectionResultData{});
+            std::vector<uchar> buf;
+            cv::imencode(".jpg", image, buf);
+            memcpy(r.clipped_image, buf.data(), buf.size());
+            results.push_back(r);
         }
 
 };
