@@ -25,8 +25,6 @@ class ConnectionThreadDispatcher {
 
         boost::lockfree::queue<DetectionResultData> dataQueue {100};
 
-        boost::lockfree::queue<ClientInfo> connectionPool {settings->connection_pool_size};
-
         boost::lockfree::queue<RestClient::Connection*> restConnPool {settings->connection_pool_size};
 
         ctpl::thread_pool connThreadPool { settings->connection_pool_size };
@@ -41,8 +39,6 @@ class ConnectionThreadDispatcher {
 
             RestClient::init();
 
-            for (auto i {0}; i < settings->connection_pool_size; ++i)
-                connectionPool.push(ClientInfo{});
             for (auto i {0}; i < settings->connection_pool_size; ++i)
                 restConnPool.push(new RestClient::Connection(settings->server_endpoint));
         }
