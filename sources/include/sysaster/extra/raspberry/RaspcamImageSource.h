@@ -2,13 +2,25 @@
 #define _RASP_SOURCE_
 
 #include "sysaster/core/imgsource/ImageSource.h"
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/videoio.hpp"
+#include "sysaster/common.h"
 
 class RaspcamImageSource : public ImageSource {
 
+
+    private:
+        cv::VideoCapture videocapture;
+
     public:
 
-        void get(cv::Mat& image) const override {
-            image = cv::Mat(30, 30, CV_16SC3);
+	RaspcamImageSource(const std::string& url) {}
+
+        bool get(cv::Mat& image) override {
+	    if (!videocapture.isOpened()) {
+		videocapture = cv::VideoCapture(sysaster::settings->image_source_url);
+	    }
+	    return videocapture.read(image);
         }
 };
 

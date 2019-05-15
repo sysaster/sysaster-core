@@ -17,7 +17,7 @@ int main(int argn, char* args[]) {
     parser.parse(file_path, *sysaster::settings);
 
     //> Instantiate ImageSource
-    std::shared_ptr<ImageSource> imgSource = std::make_shared<RaspcamImageSource>();
+    std::shared_ptr<ImageSource> imgSource = std::make_shared<RaspcamImageSource>(sysaster::settings->image_source_url);
 
     //> Instantiate ConnectionThreadDispatcher
     sysaster::connection_dispatcher = std::make_shared<ConnectionThreadDispatcher>();

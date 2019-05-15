@@ -34,9 +34,10 @@ class ImageRequestor {
         void require() const {
             while(true) {
                 cv::Mat img;
-                image_source->get(img);
-                image_dispatcher->require_detection(img);
-                std::this_thread::sleep_for (std::chrono::seconds(settings->image_source_interval));
+                if (image_source->get(img)) {
+                    image_dispatcher->require_detection(img);
+		}
+	        std::this_thread::sleep_for (std::chrono::seconds(settings->image_source_interval));
             }
         }
 };

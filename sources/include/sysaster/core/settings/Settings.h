@@ -10,6 +10,7 @@ struct Settings {
     size_t server_port;
     std::string server_ip;
     std::string server_endpoint;
+    std::string image_source_url;
     int image_source_interval {1};
 };
 

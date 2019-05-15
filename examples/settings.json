@@ -1,6 +1,7 @@
 {
     "image_source": {
-        "interval": 1
+        "interval": 1,
+	"url": "http://127.0.0.1:8540"
     },
     "detection": {
         "pool_size": 1

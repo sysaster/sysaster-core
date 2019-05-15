@@ -17,7 +17,7 @@ class ImageSource {
          *
          * @param image a reference to the image
          * */
-        virtual void get(cv::Mat& image) const = 0;
+        virtual bool get(cv::Mat& image) = 0;
 
 };
 
