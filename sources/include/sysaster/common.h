@@ -8,11 +8,11 @@ class ConnectionThreadDispatcher;
 
 namespace sysaster {
 
-    inline const static std::shared_ptr<Settings> settings = std::make_shared<Settings>();
+    const static std::shared_ptr<Settings> settings = std::make_shared<Settings>();
 
-    inline static std::shared_ptr<PersonDetector> person_detector {nullptr};
+    static std::shared_ptr<PersonDetector> person_detector {nullptr};
 
-    inline static std::shared_ptr<ConnectionThreadDispatcher> connection_dispatcher {nullptr};
+    static std::shared_ptr<ConnectionThreadDispatcher> connection_dispatcher {nullptr};
 
 };
 

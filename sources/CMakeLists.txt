@@ -1,10 +1,8 @@
 cmake_minimum_required(VERSION 3.13)
 
-project(omg VERSION 0.1.0 LANGUAGES CXX)
+project(sysaster VERSION 0.1.0 LANGUAGES CXX)
 
 include(FetchContent)
-
-set(YAML_CPP_BUILD_TESTS CACHE BOOL OFF)
 
 # deps
 #-----------------------------------------#
@@ -59,7 +57,7 @@ endif()
 # executables
 # --------------------------------------- #
 add_executable(sysaster src/SysasterMain.cpp)
-target_link_libraries(sysaster PUBLIC ${OpenCV_LIBS} PUBLIC restclient-cpp)
+target_link_libraries(sysaster PUBLIC ${OpenCV_LIBS} PUBLIC restclient-cpp PUBLIC curl)
 target_include_directories(sysaster PUBLIC include PUBLIC ${OpenCV_INCLUDE_DIRS})
 
 # test definitions

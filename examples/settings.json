@@ -1,6 +1,6 @@
 {
     "image_source": {
-        "interval": 3
+        "interval": 1
     },
     "detection": {
         "pool_size": 1
