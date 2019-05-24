@@ -23,6 +23,8 @@ class PersonDetector {
          * */
         virtual void detect(const cv::Mat image, std::vector<DetectionResultData>& results) const = 0;
 
+        virtual bool is_errored() const { return false; };
+
 };
 
 #endif

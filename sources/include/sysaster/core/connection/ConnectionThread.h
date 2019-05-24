@@ -42,8 +42,6 @@ class ConnectionThread {
                 const DetectionResultData& data, 
                 boost::lockfree::queue<RestClient::Connection*>& connPool){
         
-            std::cout << "asked for rest connection" << std::endl;
-
             RestClient::Response resp = connection->post("/detections/person", data.to_json());
 
             if (resp.code == -1) {

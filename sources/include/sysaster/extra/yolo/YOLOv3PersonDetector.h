@@ -126,7 +126,7 @@ class YOLOv3PersonDetector : public PersonDetector {
                 const decltype(file_weight)& file_weight)
                 : file_class_names{file_class_names}, file_config {file_config}, file_weight {file_weight} {
        
-            errored = load_classes();
+            errored = not load_classes();
 
             if (!errored) {
                 try {
@@ -135,6 +135,7 @@ class YOLOv3PersonDetector : public PersonDetector {
                     net.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
                 } catch (std::exception& e) {
                     errored = true;
+                    std::cout << e.what() << std::endl;
                 }
             }
         }
@@ -146,6 +147,8 @@ class YOLOv3PersonDetector : public PersonDetector {
          * @param results   detection results 
          * */
         void detect(const cv::Mat image, std::vector<DetectionResultData>& detect_data_results) const override {
+
+            std::cout << "asked to detect" << std::endl;
 
             cv::Point anchor {-1, -1};
 
@@ -192,7 +195,7 @@ class YOLOv3PersonDetector : public PersonDetector {
          *
          * @return errored model
          * */
-        inline bool is_errored() const { return errored; }
+        inline bool is_errored() const override { return errored; }
 
 };
 

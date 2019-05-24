@@ -74,5 +74,7 @@ tags
 # Persistent undo
 [._]*.un~
 
+configs/files/*
+
 # End of https://www.gitignore.io/api/vim,c++,cmake
 
