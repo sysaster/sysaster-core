@@ -14,6 +14,7 @@ using nlohmann::json;
 
 struct DetectionResultData {
     
+    float confidence;
     float x;
     float y;
     float width {3};

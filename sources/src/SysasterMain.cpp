@@ -29,7 +29,10 @@ int main(int argn, char* args[]) {
     std::shared_ptr<ImageRequestor> imgRequestor = std::make_shared<ImageRequestor>(imgSource, imgThreDispat);
 
     //> Instantiate PersonDetector
-    sysaster::person_detector = std::make_shared<YOLOv3PersonDetector>();
+    auto file_class_names = "";
+    auto file_config = "";
+    auto file_weight = "";
+    sysaster::person_detector = std::make_shared<YOLOv3PersonDetector>(file_class_names, file_config, file_weight);
 
     //> Start connection dispatcher thread
     std::thread conn_disp_thread {std::ref(*sysaster::connection_dispatcher)};
