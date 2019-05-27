@@ -10,8 +10,9 @@ sudo apt-get install libboost-all-dev
 sudo apt-get install libcurl4-openssl-dev
 ```
 2. Install restclient-cpp: https://github.com/mrtazz/restclient-cpp
+3. Install `cmake` >= 3.13
 
-## Build and run (tested in Manjaro, Arch and Raspbian (RP3 B)
+## Build and run (tested on Manjaro, Arch and Raspbian)
 
 ```
 mkdir build
