@@ -69,6 +69,10 @@ class YOLOv3PersonDetector : public PersonDetector {
             drd.height = box.height;
             drd.confidence = conf;
 
+            std::shared_ptr<std::vector<uchar>> buf = std::make_shared<std::vector<uchar>>();
+            cv::imencode(".png", frame(box), *buf);
+            drd.clipped_image = buf->data();
+
             detect_data_results.push_back(drd);
         }
             

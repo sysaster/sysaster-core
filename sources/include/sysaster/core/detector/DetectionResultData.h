@@ -22,7 +22,7 @@ struct DetectionResultData {
     float latitude;
     float longitude;
     long time_ms;
-    char clipped_image[900];
+    const uchar * clipped_image;//[900];
 
     DetectionResultData() {}
 
@@ -52,8 +52,7 @@ void to_json(json& j, const DetectionResultData& d) {
             clip += std::to_string(d.clipped_image[i]);
         }
         j["clipped_image"] = clip;
-    } else
-        j["clipped_image"] = "aaaaaaaaaa";
+    }
 }
 
 void from_json(const json& j, DetectionResultData& d) { /*TODO*/ }
