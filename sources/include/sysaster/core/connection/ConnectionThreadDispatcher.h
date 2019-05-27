@@ -61,7 +61,7 @@ class ConnectionThreadDispatcher {
          * */
         void operator()() {
             while (true) {
-                if (restConnPool.empty()) 
+                if (restConnPool.empty())
                     continue;
                 DetectionResultData data;
                 if (!next(data))

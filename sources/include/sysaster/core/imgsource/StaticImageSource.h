@@ -30,7 +30,7 @@ class StaticImageSource : public ImageSource {
             std::cout << "asked for image" << std::endl;
             if (!img.data)
                 return false;
-            image = img; 
+            image = img.clone(); 
             return true;
         }
 

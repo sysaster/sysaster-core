@@ -47,7 +47,7 @@ class ImageThreadDispatcher {
                if (imageQueue.empty()) {
                     continue;
                } else {
-                    cv::Mat & img = imageQueue.front();
+                    cv::Mat img = imageQueue.front();
                     detectorPool.push(DetectionThread{
                             sysaster::person_detector, 
                             sysaster::connection_dispatcher
