@@ -42,7 +42,7 @@ class ConnectionThread {
                 const DetectionResultData& data, 
                 boost::lockfree::queue<RestClient::Connection*>& connPool){
 
-            std::cout << "try to send" << std::endl;
+            std::cout << "[sysaster INFO] try to send" << std::endl;
         
             RestClient::Response resp = connection->post("/detections/person", data.to_json());
 

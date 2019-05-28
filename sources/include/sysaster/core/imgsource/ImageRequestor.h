@@ -35,8 +35,10 @@ class ImageRequestor {
             while(true) {
                 cv::Mat img;
                 if (image_source->get(img)) {
+                    std::cout << "[sysaster INFO] got a new image" << std::endl;
                     image_dispatcher->require_detection(img);
-		        }
+		        } else 
+                    std::cout << "[sysaster ERROR] fail to retrieve a new image" << std::endl;
 	            std::this_thread::sleep_for (std::chrono::seconds(settings->image_source_interval));
             }
         }

@@ -48,11 +48,11 @@ class ImageThreadDispatcher {
                     continue;
                } else {
                     cv::Mat img = imageQueue.front();
+                    imageQueue.pop();
                     detectorPool.push(DetectionThread{
                             sysaster::person_detector, 
                             sysaster::connection_dispatcher
                     }, img);
-                    imageQueue.pop();
                }
             } 
         }

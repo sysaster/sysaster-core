@@ -34,7 +34,9 @@ class DetectionThread {
          * */
         void operator()(int id, const cv::Mat& image) {
             std::vector<DetectionResultData> detection_results;
+            std::cout << "[sysaster INFO] asked for detection" << std::endl;
             person_detector->detect(image, detection_results); 
+            std::cout << "[sysaster INFO] detection finished" << std::endl;
             connection_dispatcher->require_send(detection_results);
         }
 
