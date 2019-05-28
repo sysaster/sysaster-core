@@ -71,9 +71,17 @@ class YOLOv3PersonDetector : public PersonDetector {
             drd.height = box.height;
             drd.confidence = conf;
 
-            auto clip = frame(box);
-            cv::cvtColor(clip, clip, cv::COLOR_BGR2GRAY);
-            std::string clipped = base64_encode(clip.data, clip.rows * clip.cols);
+            //> Crop and separate channels
+            auto clip_original = frame(box);
+            drd.channels = clip_original.channels();
+            std::vector<cv::Mat> chans;
+            cv::split(clip_original, chans);
+            //> Stack channels
+            cv::Mat clip;
+            for (auto& c : chans)
+                clip.push_back(c);
+            //> Encode b64
+            std::string clipped = base64_encode(clip.data, drd.width * drd.height * drd.channels);
             drd.clipped_image = new char[clipped.length() + 1];
             strcpy(drd.clipped_image, clipped.c_str());
             drd.clipped_image_size = clipped.length() + 1;

@@ -19,6 +19,7 @@ struct DetectionResultData {
     float y;
     float width {3};
     float height {3};
+    int channels {1};
     float latitude;
     float longitude;
     long time_ms;
@@ -39,7 +40,8 @@ void to_json(json& j, const DetectionResultData& d) {
                     {"x", d.x},
                     {"y", d.y},
                     {"w", d.width},
-                    {"h", d.height}
+                    {"h", d.height},
+                    {"c", d.channels}
                 }
             },
             {"time_ms", d.time_ms},
