@@ -5,6 +5,7 @@
 #include "sysaster/core/detector/DetectionResultData.h"
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/dnn.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
 #include "extern/base64.h"
 
 #define INP_WIDTH 416
@@ -71,6 +72,7 @@ class YOLOv3PersonDetector : public PersonDetector {
             drd.confidence = conf;
 
             auto clip = frame(box);
+            cv::cvtColor(clip, clip, cv::COLOR_BGR2GRAY);
             std::string clipped = base64_encode(clip.data, clip.rows * clip.cols);
             drd.clipped_image = new char[clipped.length() + 1];
             strcpy(drd.clipped_image, clipped.c_str());
