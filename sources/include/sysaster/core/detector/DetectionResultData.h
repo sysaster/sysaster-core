@@ -22,7 +22,8 @@ struct DetectionResultData {
     float latitude;
     float longitude;
     long time_ms;
-    const uchar * clipped_image;//[900];
+    char * clipped_image;//[900];
+    int clipped_image_size;
 
     DetectionResultData() {}
 
@@ -48,10 +49,11 @@ void to_json(json& j, const DetectionResultData& d) {
 
     if (d.clipped_image != nullptr) {
         std::string clip = "";
-        for (int i {0}; i < d.width * d.height; ++i) {
-            clip += std::to_string(d.clipped_image[i]);
-        }
+        for (int i {0}; i < d.clipped_image_size; ++i)
+            clip += d.clipped_image[i];
         j["clipped_image"] = clip;
+
+        delete[] d.clipped_image;
     }
 }
 

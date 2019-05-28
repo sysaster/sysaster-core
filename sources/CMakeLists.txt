@@ -53,11 +53,13 @@ endif()
 
 # libraries
 # --------------------------------------- #
+add_library(cppbase64 src/extern/base64.cpp)
+target_include_directories(cppbase64 PUBLIC include)
 
 # executables
 # --------------------------------------- #
 add_executable(sysaster src/SysasterMain.cpp)
-target_link_libraries(sysaster PUBLIC ${OpenCV_LIBS} PUBLIC restclient-cpp PUBLIC curl)
+target_link_libraries(sysaster PUBLIC ${OpenCV_LIBS} PUBLIC restclient-cpp PUBLIC curl PRIVATE cppbase64)
 target_include_directories(sysaster PUBLIC include PUBLIC ${OpenCV_INCLUDE_DIRS})
 
 # test definitions
