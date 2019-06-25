@@ -25,7 +25,7 @@ class ConnectionThreadDispatcher {
 
         boost::lockfree::queue<DetectionResultData> dataQueue {100};
 
-        boost::lockfree::queue<RestClient::Connection*> restConnPool {settings->connection_pool_size};
+        boost::lockfree::queue<RestClient::Connection*> restConnPool { static_cast<long unsigned int>(settings->connection_pool_size) };
 
         ctpl::thread_pool connThreadPool { settings->connection_pool_size };
 

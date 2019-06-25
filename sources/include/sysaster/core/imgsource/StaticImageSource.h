@@ -15,25 +15,23 @@ class StaticImageSource : public ImageSource {
     private:
 
         cv::Mat img;
+        std::string img_path;
 
-    public:
+    protected:
 
-        StaticImageSource(const std::string& img_path) 
-            : img {cv::imread(img_path, cv::IMREAD_COLOR)} {/*empty*/}
+        bool establish() override {
+            img = cv::imread(img_path, cv::IMREAD_COLOR);
+            return img.data;
+        }
 
-        /**
-         * Asks for an image.
-         *
-         * @param image a reference to the image
-         * */
-        bool get(cv::Mat& image) {
-            std::cout << "asked for image" << std::endl;
-            if (!img.data)
-                return false;
+        bool get_image(cv::Mat& image) override {
             image = img.clone(); 
             return true;
         }
 
+    public:
+
+        StaticImageSource(const std::string& img_path) : img_path {img_path} {}
 };
 
 #endif

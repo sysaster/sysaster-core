@@ -13,19 +13,23 @@ class RaspcamImageSource : public ImageSource {
         cv::VideoCapture videocapture;
         std::string url;
 
-    public:
+    protected:
 
-        RaspcamImageSource(const std::string& url) : url {url} {}
+        bool establish() override {
+            videocapture = cv::VideoCapture(url);
+            return videocapture.isOpened();
+        }
 
-        bool get(cv::Mat& image) override {
-            if (!videocapture.isOpened()) {
-                videocapture = cv::VideoCapture(url);
-            }
+        bool get_image(cv::Mat& image) override {
             cv::Mat img;
             bool r = videocapture.read(img);
             image = img.clone();
             return r;
         }
+
+    public:
+
+        RaspcamImageSource(const std::string& url) : url {url} {}
 };
 
 #endif

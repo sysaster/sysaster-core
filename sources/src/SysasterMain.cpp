@@ -1,6 +1,7 @@
 #include <iostream>
 #include "sysaster/core.h"
 #include "sysaster/extra/raspberry/RaspcamImageSource.h"
+#include "sysaster/extra/tello/TelloImageSource.h"
 #include "sysaster/core/imgsource/StaticImageSource.h"
 #include "sysaster/extra/yolo/YOLOv3PersonDetector.h"
 

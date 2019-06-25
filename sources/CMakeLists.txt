@@ -34,6 +34,13 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
+set(PYTHON_LIBRARY /usr/lib/libpython2.7.so) 
+set(PYTHON_INCLUDE_DIR /usr/include/python2.7)
+set(PYTHON_EXECUTABLE /usr/bin/python2.7)
+
+find_package(PythonLibs 2.7 REQUIRED)
+include_directories(${PYTHON_INCLUDE_DIRS})
+
 # submodules
 # --------------------------------------- #
 find_package(Git QUIET)
@@ -59,8 +66,8 @@ target_include_directories(cppbase64 PUBLIC include)
 # executables
 # --------------------------------------- #
 add_executable(sysaster src/SysasterMain.cpp)
-target_link_libraries(sysaster PUBLIC ${OpenCV_LIBS} PUBLIC restclient-cpp PUBLIC curl PRIVATE cppbase64)
-target_include_directories(sysaster PUBLIC include PUBLIC ${OpenCV_INCLUDE_DIRS})
+target_link_libraries(sysaster PUBLIC ${OpenCV_LIBS} PUBLIC restclient-cpp PUBLIC curl PRIVATE cppbase64 PRIVATE ${PYTHON_LIBRARIES})
+target_include_directories(sysaster PUBLIC include PUBLIC ${OpenCV_INCLUDE_DIRS} PRIVATE ${Python2_NumPy_INCLUDE_DIRS})
 
 # test definitions
 # use googletest framework
@@ -79,11 +86,12 @@ include(GoogleTest)
 
 set(test_sources ${test_sources}
     tests/main.cpp
+    tests/tello_tests.cpp
 )
 
 add_executable(sysastercoretests ${test_sources})
-target_link_libraries(sysastercoretests PRIVATE gtest)
-target_include_directories(sysastercoretests PRIVATE include)
+target_link_libraries(sysastercoretests PRIVATE gtest PUBLIC ${OpenCV_LIBS} PRIVATE ${PYTHON_LIBRARIES})
+target_include_directories(sysastercoretests PRIVATE include PUBLIC ${OpenCV_INCLUDE_DIRS} PRIVATE ${Python2_NumPy_INCLUDE_DIRS})
 
 gtest_discover_tests(sysastercoretests)
 
