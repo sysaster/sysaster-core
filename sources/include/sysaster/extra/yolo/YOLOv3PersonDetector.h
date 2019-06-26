@@ -197,6 +197,15 @@ class YOLOv3PersonDetector : public PersonDetector {
             //> Post process
             post_process(image, rect_results, detect_data_results);
 
+            //> Add time and id
+            long ms = std::chrono::duration_cast< std::chrono::milliseconds >(
+                std::chrono::system_clock::now().time_since_epoch()
+            ).count();
+            for (auto& r : detect_data_results) {
+                r.id_frame = ms;    // TODO compute better id_frame
+                r.time_ms = ms;     // TODO include time when captured
+            }
+
             //DetectionResultData r;
             /*r.height = image.rows; 
             r.width = image.cols; 
