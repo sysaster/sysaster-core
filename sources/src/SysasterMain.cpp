@@ -25,6 +25,15 @@ int main(int argn, char* args[]) {
         imgSource = std::make_shared<StaticImageSource>(sysaster::settings->extra["image_source_url"]);
     else if (sysaster::settings->img_source_type == Settings::ImgSourceType::RASPCAM)
         imgSource = std::make_shared<RaspcamImageSource>(sysaster::settings->extra["image_source_url"]);
+    else if (sysaster::settings->img_source_type == Settings::ImgSourceType::TELLO)
+        imgSource = std::make_shared<TelloImageSource>(
+                sysaster::settings->extra["user_ip"],
+                std::stoi(sysaster::settings->extra["user_port"]),
+                sysaster::settings->extra["tello_ip"],
+                std::stoi(sysaster::settings->extra["tello_port"]),
+                false, 
+                std::stof(sysaster::settings->extra["response_timeout"])
+                );
     
     //> Instantiate ConnectionThreadDispatcher
     sysaster::connection_dispatcher = std::make_shared<ConnectionThreadDispatcher>();

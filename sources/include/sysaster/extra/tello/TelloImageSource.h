@@ -22,6 +22,7 @@ class TelloImageSource : public ImageSource {
         int local_port;
         int tello_port;
         bool imperial;
+        float response_timeout;
 
         PyObject *module_name, *module, *dict, *python_class, *object;
 
@@ -110,9 +111,11 @@ class TelloImageSource : public ImageSource {
                 int local_port,
                 const decltype(tello_ip)& tello_ip,
                 int tello_port=8889,
-                bool imperial = false)
+                bool imperial = false,
+                float response_timeout=0.3)
         : local_ip {local_ip}, local_port {local_port},
-          tello_ip {tello_ip}, tello_port {tello_port}, imperial {imperial} {/** empty */} 
+          tello_ip {tello_ip}, tello_port {tello_port}, 
+          imperial {imperial}, response_timeout{response_timeout} {/** empty */} 
 
         ~TelloImageSource() {
             Py_DECREF(object);
