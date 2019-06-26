@@ -1,8 +1,12 @@
 {
     "image_source": {
-        "type": "static",
+        "type": "tello",
         "interval": 3,
-	    "url": "/home/vitorgreati/git-repos/sysaster-core/examples/person.jpg"
+    	"tello_ip": "192.168.10.1",
+    	"tello_port": "8889",
+    	"user_ip": "",
+    	"user_port": "8889",
+	"response_timeout": "0.5"
     },
     "detection": {
         "type": "yolov3",
