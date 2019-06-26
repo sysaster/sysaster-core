@@ -6,6 +6,7 @@
 #include "numpy/arrayobject.h"
 #include <thread>
 #include <chrono>
+#include "opencv2/highgui/highgui.hpp"
 
 /**
  * Capture images from a tello drone
@@ -98,6 +99,7 @@ class TelloImageSource : public ImageSource {
             npy_intp ncols = PyArray_DIM(np_ret, 1); // number of columns
 
             cv::Mat mat (nrows, ncols, CV_8UC3, PyArray_DATA(np_ret));
+	    cv::imwrite("teste.png", mat);
             image = mat.clone();
 
             Py_DECREF(np_ret);
