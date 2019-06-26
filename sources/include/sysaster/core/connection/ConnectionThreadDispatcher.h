@@ -5,7 +5,6 @@
 #include "ClientInfo.h"
 #include "ConnectionThread.h"
 #include "sysaster/core/settings/Settings.h"
-#include "sysaster/common.h"
 #include <boost/lockfree/queue.hpp>
 #include "extern/ctpl_stl.h"
 #include "restclient-cpp/connection.h"
@@ -21,7 +20,7 @@ class ConnectionThreadDispatcher {
 
     private:
 
-        std::shared_ptr<Settings> settings = sysaster::settings;
+        std::shared_ptr<Settings> settings;
 
         boost::lockfree::queue<DetectionResultData> dataQueue {100};
 
@@ -35,13 +34,7 @@ class ConnectionThreadDispatcher {
             RestClient::disable();
         }
 
-        ConnectionThreadDispatcher() {
-
-            RestClient::init();
-
-            for (auto i {0}; i < settings->connection_pool_size; ++i)
-                restConnPool.push(new RestClient::Connection(settings->server_endpoint));
-        }
+        ConnectionThreadDispatcher();
 
         void require_send(std::vector<DetectionResultData>& data) {
             for (DetectionResultData& d : data)

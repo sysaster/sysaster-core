@@ -1,5 +1,6 @@
 #include "sysaster/core/detector/DetectionResultData.h"
 #include "extern/json.hpp"
+#include "sysaster/common.h"
 
 using nlohmann::json;
 
@@ -27,6 +28,7 @@ void to_json(json& j, const DetectionResultData& d) {
 
         delete[] d.clipped_image;
     }
+    j["topic"] = sysaster::settings->topic;
 }
 
 void from_json(const json& j, DetectionResultData& d) { /*TODO*/ }

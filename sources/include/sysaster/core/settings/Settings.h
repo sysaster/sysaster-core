@@ -25,6 +25,7 @@ struct Settings {
     std::string server_endpoint;
     std::string image_source_url;
     int image_source_interval {1};
+    std::string topic;
 
     std::map<std::string, std::string> extra;
 };
