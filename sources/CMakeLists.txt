@@ -9,6 +9,7 @@ include(FetchContent)
 
 find_package(OpenCV REQUIRED)
 find_package(Boost REQUIRED)
+find_package(SQLite3 REQUIRED)
 
 # define build types and configurations
 # --------------------------------------- #
@@ -65,8 +66,11 @@ target_include_directories(cppbase64 PUBLIC include)
 
 # executables
 # --------------------------------------- #
-add_executable(sysaster src/SysasterMain.cpp)
-target_link_libraries(sysaster PUBLIC ${OpenCV_LIBS} PUBLIC restclient-cpp PUBLIC curl PRIVATE cppbase64 PRIVATE ${PYTHON_LIBRARIES})
+add_executable(sysaster 
+    src/SysasterMain.cpp
+    src/core/dao/SQLite3DetectionDAO.cpp
+    )
+target_link_libraries(sysaster PUBLIC ${OpenCV_LIBS} PUBLIC restclient-cpp PUBLIC curl PRIVATE cppbase64 PRIVATE ${PYTHON_LIBRARIES} PRIVATE sqlite3)
 target_include_directories(sysaster PUBLIC include PUBLIC ${OpenCV_INCLUDE_DIRS} PRIVATE ${Python2_NumPy_INCLUDE_DIRS})
 
 # external
@@ -95,12 +99,14 @@ include(GoogleTest)
 
 set(test_sources ${test_sources}
     tests/main.cpp
-    tests/tello_tests.cpp
+    #tests/tello_tests.cpp
+    tests/detections_sqlite_tests.cpp
 )
 
-add_executable(sysastercoretests ${test_sources})
-target_link_libraries(sysastercoretests PRIVATE gtest PUBLIC ${OpenCV_LIBS} PRIVATE ${PYTHON_LIBRARIES})
-target_include_directories(sysastercoretests PRIVATE include PUBLIC ${OpenCV_INCLUDE_DIRS} PRIVATE ${Python2_NumPy_INCLUDE_DIRS})
+add_executable(sysastercoretests ${test_sources} 
+    src/core/dao/SQLite3DetectionDAO.cpp)
+target_link_libraries(sysastercoretests PRIVATE gtest PUBLIC ${OpenCV_LIBS} PRIVATE ${PYTHON_LIBRARIES} PRIVATE sqlite3)
+target_include_directories(sysastercoretests PUBLIC include PUBLIC ${OpenCV_INCLUDE_DIRS} PRIVATE ${Python2_NumPy_INCLUDE_DIRS})
 
 gtest_discover_tests(sysastercoretests)
 

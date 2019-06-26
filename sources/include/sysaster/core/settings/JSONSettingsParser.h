@@ -20,7 +20,11 @@ void from_json(const json& j, Settings& s) {
         s.extra.insert({"image_source_url", j["image_source"]["url"]});
     } else if (img_source_type == "tello") {
         s.img_source_type = Settings::ImgSourceType::TELLO;
-        s.extra.insert({"image_source_url", j["image_source"]["url"]});
+        s.extra.insert({"tello_ip", j["image_source"]["tello_ip"]});
+        s.extra.insert({"tello_port", j["image_source"]["tello_port"]});
+        s.extra.insert({"user_ip", j["image_source"]["user_ip"]});
+        s.extra.insert({"user_port", j["image_source"]["user_port"]});
+        s.extra.insert({"response_timeout", j["image_source"]["response_timeout"]});
     }
 
     s.image_source_interval = j["image_source"]["interval"];
