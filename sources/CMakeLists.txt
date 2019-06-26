@@ -69,6 +69,8 @@ target_include_directories(cppbase64 PUBLIC include)
 add_executable(sysaster 
     src/SysasterMain.cpp
     src/core/dao/SQLite3DetectionDAO.cpp
+    src/core/detector/DetectionResultData.cpp
+    src/helpers.cpp
     )
 target_link_libraries(sysaster PUBLIC ${OpenCV_LIBS} PUBLIC restclient-cpp PUBLIC curl PRIVATE cppbase64 PRIVATE ${PYTHON_LIBRARIES} PRIVATE sqlite3)
 target_include_directories(sysaster PUBLIC include PUBLIC ${OpenCV_INCLUDE_DIRS} PRIVATE ${Python2_NumPy_INCLUDE_DIRS})
@@ -104,7 +106,9 @@ set(test_sources ${test_sources}
 )
 
 add_executable(sysastercoretests ${test_sources} 
-    src/core/dao/SQLite3DetectionDAO.cpp)
+    src/core/dao/SQLite3DetectionDAO.cpp
+    src/helpers.cpp
+    )
 target_link_libraries(sysastercoretests PRIVATE gtest PUBLIC ${OpenCV_LIBS} PRIVATE ${PYTHON_LIBRARIES} PRIVATE sqlite3)
 target_include_directories(sysastercoretests PUBLIC include PUBLIC ${OpenCV_INCLUDE_DIRS} PRIVATE ${Python2_NumPy_INCLUDE_DIRS})
 
