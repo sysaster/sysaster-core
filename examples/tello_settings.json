@@ -6,7 +6,7 @@
     	"tello_port": "8889",
     	"user_ip": "",
     	"user_port": "8889",
-	"response_timeout": "0.5"
+        "response_timeout": "0.5"
     },
     "detection": {
         "type": "yolov3",
@@ -16,7 +16,8 @@
         "file_class_names": "/home/vitorgreati/git-repos/sysaster-core/configs/files/coco.names"
     },
     "connection": {
-        "server_endpoint": "http://127.0.0.1:4000/detections",
+        "server_url": "http://10.7.152.15:4000",
+        "server_endpoint": "/detections",
         "pool_size": 1
     },
     "topic": {
