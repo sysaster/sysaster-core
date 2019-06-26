@@ -1,5 +1,9 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.3)
 project(python_h264decoder)
+
+set(PYTHON_LIBRARY "/usr/lib/libpython2.7.so") 
+set(PYTHON_INCLUDE_DIR "/usr/include/python2.7")
+set(PYTHON_EXECUTABLE "/usr/bin/python2.7")
 
 set(Python_ADDITIONAL_VERSIONS 2.7)
 
@@ -14,11 +18,8 @@ elseif(LINUX)
 	find_package(Boost REQUIRED COMPONENTS "python")
 endif(APPLE)
 
-
-
 find_package(PythonInterp 2.7 REQUIRED)
 find_package(PythonLibs 2.7 REQUIRED )
-
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${Boost_INCLUDE_DIRS})
