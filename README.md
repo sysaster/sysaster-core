@@ -23,8 +23,7 @@ sudo apt-get install libcurl4-openssl-dev
 ## Build and run (tested on Manjaro, Arch and Raspbian)
 
 ```
-mkdir build
+./configure.sh
 cd build
-cmake ../sources/
 cmake --build .
 ```
