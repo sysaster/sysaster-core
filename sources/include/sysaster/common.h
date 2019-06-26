@@ -3,6 +3,7 @@
 
 #include "sysaster/core/settings/Settings.h"
 #include "sysaster/core/connection/ConnectionThreadDispatcher.h"
+#include "sysaster/core/detector/PersonDetector.h"
 
 class ConnectionThreadDispatcher;
 

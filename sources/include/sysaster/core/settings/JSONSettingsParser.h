@@ -9,6 +9,10 @@ using nlohmann::json;
 
 void from_json(const json& j, Settings& s) {
 
+    //> Topic
+    auto topic = j["topic"]["code"];
+    sysaster::settings->topic = topic;
+
     //> Image source
     auto img_source_type = j["image_source"]["type"];
 
