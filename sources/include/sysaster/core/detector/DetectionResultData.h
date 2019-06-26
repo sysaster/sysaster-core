@@ -18,8 +18,8 @@ struct DetectionResultData {
     float width {3};
     float height {3};
     int channels {1};
-    float latitude;
-    float longitude;
+    float latitude = -5.8319935;
+    float longitude = -35.2055041;
     long time_ms;
     char * clipped_image;//[900];
     int clipped_image_size;
