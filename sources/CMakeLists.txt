@@ -69,6 +69,15 @@ add_executable(sysaster src/SysasterMain.cpp)
 target_link_libraries(sysaster PUBLIC ${OpenCV_LIBS} PUBLIC restclient-cpp PUBLIC curl PRIVATE cppbase64 PRIVATE ${PYTHON_LIBRARIES})
 target_include_directories(sysaster PUBLIC include PUBLIC ${OpenCV_INCLUDE_DIRS} PRIVATE ${Python2_NumPy_INCLUDE_DIRS})
 
+# external
+# ---------------------------------------#
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/extern/h264decoder tello)
+
+# python modules
+# ---------------------------------------#
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/python/tello
+     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 # test definitions
 # use googletest framework
 # --------------------------------------- #

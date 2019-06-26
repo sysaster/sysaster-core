@@ -4,7 +4,6 @@
 #include <Python.h>
 #include "sysaster/core/imgsource/ImageSource.h"
 #include "numpy/arrayobject.h"
-#include <opencv2/highgui/highgui.hpp>
 #include <thread>
 #include <chrono>
 
@@ -33,6 +32,9 @@ class TelloImageSource : public ImageSource {
     protected:
 
         bool establish() override {
+    
+            setenv("PYTHONPATH", ".", 1);
+
             Py_SetProgramName("sysaster-tello");
             Py_Initialize();
 
@@ -95,7 +97,6 @@ class TelloImageSource : public ImageSource {
             npy_intp ncols = PyArray_DIM(np_ret, 1); // number of columns
 
             cv::Mat mat (nrows, ncols, CV_8UC3, PyArray_DATA(np_ret));
-            cv::imwrite("/home/vitorgreati/teste.png", mat);
             image = mat.clone();
 
             Py_DECREF(np_ret);
