@@ -17,6 +17,7 @@ sudo apt-get install libcurl4-openssl-dev
 2. Install pip2
 3. Install numpy for python2
 4. Find includes for numpy and link to /usr/include/numpy
+5. Install opencv-python via pip2
 
 ## Build and run (tested on Manjaro, Arch and Raspbian)
 
