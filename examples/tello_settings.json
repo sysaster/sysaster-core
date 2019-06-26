@@ -16,7 +16,7 @@
         "file_class_names": "/home/vitorgreati/git-repos/sysaster-core/configs/files/coco.names"
     },
     "connection": {
-        "server_endpoint": "http://127.0.0.1:5000",
+        "server_endpoint": "http://127.0.0.1:4000/detections",
         "pool_size": 1
     },
     "topic": {
