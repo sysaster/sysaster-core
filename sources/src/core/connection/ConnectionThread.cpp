@@ -24,7 +24,7 @@ void ConnectionThread::operator()(
 
         std::cout << "[sysaster INFO] try to send" << std::endl;
     
-        RestClient::Response resp = connection->post("/detections/person", data.to_json());
+        RestClient::Response resp = connection->post(settings->server_endpoint, data.to_json());
 
         if (resp.code == -1) {
             std::cout << "[sysaster ERROR] fail to post detection data" << std::endl;
