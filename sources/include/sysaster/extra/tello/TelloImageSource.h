@@ -91,15 +91,19 @@ class TelloImageSource : public ImageSource {
             while (img == Py_None)
                 img = PyObject_CallMethod(object, "read", NULL);
 
-            if (img == Py_None)
+            if (img == Py_None || img == NULL || img == nullptr)
                 return false;
 
             PyArrayObject *np_ret = reinterpret_cast<PyArrayObject*>(img);
+    
+            if (np_ret == NULL || np_ret == nullptr)
+                return false;
+
             npy_intp nrows = PyArray_DIM(np_ret, 0); // number of rows
             npy_intp ncols = PyArray_DIM(np_ret, 1); // number of columns
 
             cv::Mat mat (nrows, ncols, CV_8UC3, PyArray_DATA(np_ret));
-	    cv::imwrite("teste.png", mat);
+	        cv::imwrite("teste.png", mat);
             image = mat.clone();
 
             Py_DECREF(np_ret);
