@@ -11,6 +11,7 @@ sudo apt-get install libcurl4-openssl-dev
 ```
 2. Install restclient-cpp: https://github.com/mrtazz/restclient-cpp
 3. Install `cmake` >= 3.13
+4. Install sqlite3
 
 ### In order to support the Tello drone
 1. Install python2
