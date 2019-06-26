@@ -9,7 +9,7 @@ class ConnectionThreadDispatcher;
 
 namespace sysaster {
 
-    const static std::shared_ptr<Settings> settings = std::make_shared<Settings>();
+    extern std::shared_ptr<Settings> settings;
 
     static std::shared_ptr<PersonDetector> person_detector {nullptr};
 

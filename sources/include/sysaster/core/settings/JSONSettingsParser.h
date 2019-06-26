@@ -11,7 +11,7 @@ void from_json(const json& j, Settings& s) {
 
     //> Topic
     auto topic = j["topic"]["code"];
-    sysaster::settings->topic = topic;
+    s.topic = topic;
 
     //> Image source
     auto img_source_type = j["image_source"]["type"];
@@ -46,6 +46,7 @@ void from_json(const json& j, Settings& s) {
 
     //> Connection
     s.connection_pool_size = j["connection"]["pool_size"];
+    s.server_url = j["connection"]["server_url"];
     s.server_endpoint = j["connection"]["server_endpoint"];
 }
 

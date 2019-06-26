@@ -22,6 +22,7 @@ struct Settings {
     DetectorType detector_type; 
     int detection_pool_size {1};
     int connection_pool_size {1};
+    std::string server_url;
     std::string server_endpoint;
     std::string image_source_url;
     int image_source_interval {1};

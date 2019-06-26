@@ -17,6 +17,8 @@ int main(int argn, char* args[]) {
     //> Parse settings
     JSONSettingsParser parser;
     parser.parse(file_path, *sysaster::settings);
+ 
+    std::cout << "[sysaster INFO] Finished parser" << std::endl;
 
     //> Instantiate ImageSource
     std::shared_ptr<ImageSource> imgSource = nullptr;

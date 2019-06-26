@@ -73,6 +73,7 @@ add_executable(sysaster
     src/core/connection/ConnectionThread.cpp
     src/core/connection/ConnectionThreadDispatcher.cpp
     src/helpers.cpp
+    src/common.cpp
     )
 target_link_libraries(sysaster PUBLIC ${OpenCV_LIBS} PUBLIC restclient-cpp PUBLIC curl PRIVATE cppbase64 PRIVATE ${PYTHON_LIBRARIES} PRIVATE sqlite3)
 target_include_directories(sysaster PUBLIC include PUBLIC ${OpenCV_INCLUDE_DIRS} PRIVATE ${Python2_NumPy_INCLUDE_DIRS})

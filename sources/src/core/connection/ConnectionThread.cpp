@@ -23,8 +23,13 @@ void ConnectionThread::operator()(
         boost::lockfree::queue<RestClient::Connection*>& connPool){
 
         std::cout << "[sysaster INFO] try to send" << std::endl;
-    
-        RestClient::Response resp = connection->post(settings->server_endpoint, data.to_json());
+    	
+	std::string datajson = data.to_json();
+
+        RestClient::Response resp = connection->post(settings->server_endpoint, datajson);
+
+	std::cout << settings->server_endpoint << std::endl;
+	std::cout << datajson << std::endl;
 
         if (resp.code == -1) {
             std::cout << "[sysaster ERROR] fail to post detection data" << std::endl;

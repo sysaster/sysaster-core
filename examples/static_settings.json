@@ -2,17 +2,18 @@
     "image_source": {
         "type": "static",
         "interval": 3,
-	    "url": "/home/vitorgreati/git-repos/sysaster-core/examples/person.jpg"
+	"url": "/home/pi/sysaster-core/examples/person.jpg"
     },
     "detection": {
         "type": "yolov3",
         "pool_size": 1,
-        "file_config": "/home/vitorgreati/git-repos/sysaster-core/configs/files/yolov3-tiny.cfg",
-        "file_weights": "/home/vitorgreati/git-repos/sysaster-core/configs/files/yolov3-tiny.weights",
-        "file_class_names": "/home/vitorgreati/git-repos/sysaster-core/configs/files/coco.names"
+        "file_config": "/home/pi/sysaster-core/configs/files/yolov3-tiny.cfg",
+        "file_weights": "/home/pi/sysaster-core/configs/files/yolov3-tiny.weights",
+        "file_class_names": "/home/pi/sysaster-core/configs/files/coco.names"
     },
     "connection": {
-        "server_endpoint": "http://127.0.0.1:4000/detections",
+        "server_url": "http://10.7.152.15:4000",
+        "server_endpoint": "/detections",
         "pool_size": 1
     },
     "topic": {

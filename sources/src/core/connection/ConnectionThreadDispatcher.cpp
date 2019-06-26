@@ -5,5 +5,5 @@ ConnectionThreadDispatcher::ConnectionThreadDispatcher() : settings {sysaster::s
     RestClient::init();
 
     for (auto i {0}; i < settings->connection_pool_size; ++i)
-        restConnPool.push(new RestClient::Connection(settings->server_endpoint));
+        restConnPool.push(new RestClient::Connection(settings->server_url));
 }
