@@ -1,8 +1,8 @@
 import socket
 import threading
 import time
+#import cv2
 import numpy as np
-import cv2
 import libh264decoder
 
 class Tello:
@@ -57,11 +57,11 @@ class Tello:
 
         self.receive_video_thread.start()
 
-    def mk_test(self):
-        img = cv2.imread('../examples/person.jpg', cv2.IMREAD_COLOR)
-        img = np.asarray(img[:,:])
-        print img.shape
-        return img
+#   def mk_test(self):
+#       img = cv2.imread('../examples/person.jpg', cv2.IMREAD_COLOR)
+#       img = np.asarray(img[:,:])
+#       print img.shape
+#       return img
 
     def __del__(self):
         """Closes the local socket."""
