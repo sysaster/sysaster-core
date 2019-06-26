@@ -29,6 +29,7 @@ void to_json(json& j, const DetectionResultData& d) {
         delete[] d.clipped_image;
     }
     j["topic"] = sysaster::settings->topic;
+    j["id_frame"] = d.id_frame;
 }
 
 void from_json(const json& j, DetectionResultData& d) { /*TODO*/ }

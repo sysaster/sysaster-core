@@ -11,9 +11,9 @@
     "detection": {
         "type": "yolov3",
         "pool_size": 1,
-        "file_config": "/home/vitorgreati/git-repos/sysaster-core/configs/files/yolov3-tiny.cfg",
-        "file_weights": "/home/vitorgreati/git-repos/sysaster-core/configs/files/yolov3-tiny.weights",
-        "file_class_names": "/home/vitorgreati/git-repos/sysaster-core/configs/files/coco.names"
+        "file_config": "/home/pi/sysaster-core/configs/files/yolov3-tiny.cfg",
+        "file_weights": "/home/pi/sysaster-core/configs/files/yolov3-tiny.weights",
+        "file_class_names": "/home/pi/sysaster-core/configs/files/coco.names"
     },
     "connection": {
         "server_url": "http://10.7.152.15:4000",

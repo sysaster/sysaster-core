@@ -28,9 +28,6 @@ void ConnectionThread::operator()(
 
         RestClient::Response resp = connection->post(settings->server_endpoint, datajson);
 
-	std::cout << settings->server_endpoint << std::endl;
-	std::cout << datajson << std::endl;
-
         if (resp.code == -1) {
             std::cout << "[sysaster ERROR] fail to post detection data" << std::endl;
         } else if (resp.code == 200) {
