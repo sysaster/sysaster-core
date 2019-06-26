@@ -73,6 +73,14 @@ class YOLOv3PersonDetector : public PersonDetector {
 
             //> Crop and separate channels
             auto clip_original = frame(box);
+
+	    std::chrono::time_point<std::chrono::system_clock> now = 
+		        std::chrono::system_clock::now();
+	    auto duration = now.time_since_epoch();
+	    auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+	    cv::imwrite(std::to_string(millis)+".jpg", clip_original);
+	    std::cout << "estou executando" << std::endl;
+
             drd.channels = clip_original.channels();
             std::vector<cv::Mat> chans;
             cv::split(clip_original, chans);
@@ -126,6 +134,7 @@ class YOLOv3PersonDetector : public PersonDetector {
             for(size_t i = 0; i < indices.size(); ++i){
                 int idx = indices[i];
                 cv::Rect box = boxes[idx];
+		std::cout << "class " << classes[classIds[idx]] << std::endl;
                 save_pred(classIds[idx], confidences[idx], box, classes, frame, detect_data_results);
             }
         }
