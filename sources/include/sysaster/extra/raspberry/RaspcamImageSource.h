@@ -18,9 +18,9 @@ class RaspcamImageSource : public ImageSource {
 
         bool establish() override {
             videocapture = cv::VideoCapture(url);
-	    if (videocapture.isOpened()) {
-		videocapture.set(CV_CAP_PROP_BUFFERSIZE, 1);
-	    }
+            if (videocapture.isOpened()) {
+                videocapture.set(38, 1);
+            }
             return videocapture.isOpened();
         }
 
