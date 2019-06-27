@@ -12,7 +12,7 @@
 #define INP_HEIGHT 416
 //#define CONF_THRESHOLD 0.1
 //#define NMS_THRESHOLD 0.3
-#define CONF_THRESHOLD 0.5
+#define CONF_THRESHOLD 0.1
 #define NMS_THRESHOLD 0.3
 
 /**

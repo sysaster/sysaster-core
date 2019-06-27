@@ -1,7 +1,7 @@
 {
     "image_source": {
         "type": "raspcam",
-        "interval": 3,
+        "interval": 1,
 	"url": "http://192.168.1.108:8080/?action=stream"
     },
     "detection": {
@@ -17,6 +17,6 @@
         "pool_size": 1
     },
     "topic": {
-    	"code": "somedisaster"
+    	"code": "other"
     }
 }

@@ -12,11 +12,11 @@
         "file_class_names": "/home/pi/sysaster-core/configs/files/coco.names"
     },
     "connection": {
-        "server_url": "http://127.0.0.1:4000",
+        "server_url": "http://10.7.152.15:4000",
         "server_endpoint": "/detections",
         "pool_size": 1
     },
     "topic": {
-    	"code": "somedisaster"
+    	"code": "other"
     }
 }
