@@ -36,5 +36,7 @@ void ConnectionThread::operator()(
             std::cout << "[sysaster ERROR] unknown REST connection behaviour" << std::endl;
         }
 
-        connPool.push(connection);
+        //connPool.push(connection);
+        if (connection != nullptr)
+            delete connection;
 }

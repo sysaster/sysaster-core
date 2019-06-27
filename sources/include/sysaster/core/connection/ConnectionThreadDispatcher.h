@@ -54,13 +54,13 @@ class ConnectionThreadDispatcher {
          * */
         void operator()() {
             while (true) {
-                if (restConnPool.empty())
-                    continue;
+                //if (restConnPool.empty())
+                //    continue;
                 DetectionResultData data;
                 if (!next(data))
                     continue;
-                RestClient::Connection* conn;
-                restConnPool.pop(conn);
+                RestClient::Connection* conn = new RestClient::Connection(settings->server_url);
+                //restConnPool.pop(conn);
                 connThreadPool.push(ConnectionThread(), 
                         conn, std::ref(data), std::ref(this->restConnPool));
             } 

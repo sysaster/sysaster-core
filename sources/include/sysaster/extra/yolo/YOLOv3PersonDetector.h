@@ -58,12 +58,21 @@ class YOLOv3PersonDetector : public PersonDetector {
             return names;
         }
 
-        void save_pred(int classId, float conf, const cv::Rect& box, 
+        void save_pred(int classId, float conf, const cv::Rect& _box, 
                 const std::vector<std::string> & classes,
                 const cv::Mat& frame,
                 std::vector<DetectionResultData>& detect_data_results) const {
         
+	    std::cout << "estou executando0" << std::endl;
             DetectionResultData drd;
+
+            int x = 0, y = 0, w = 0, h = 0;
+            x = std::max(0, _box.x);
+            y = std::max(0, _box.y);
+            w = std::min(_box.width + _box.x, frame.cols - _box.x);
+            h = std::min(_box.height + _box.y, frame.rows - _box.y);
+
+            cv::Rect box (x, y, w, h);
 
             drd.x = box.x;
             drd.y = box.y;
@@ -71,15 +80,23 @@ class YOLOv3PersonDetector : public PersonDetector {
             drd.height = box.height;
             drd.confidence = conf;
 
-            //> Crop and separate channels
-            auto clip_original = frame(box);
+	    std::cout << "estou executando1" << std::endl;
+        std::cout << box << std::endl;
+        std::cout << frame.rows << frame.cols << frame.channels() << std::endl;
+	    std::cout << "estou executando1_" << std::endl;
+            if (!frame.data || frame.empty()) return;
 
-	    std::chrono::time_point<std::chrono::system_clock> now = 
+            //> Crop and separate channels
+            cv::Mat clip_original = frame(box);
+
+            //cv::resize(clip_original, clip_original, cv::Size(50, 50));
+
+	    /*std::chrono::time_point<std::chrono::system_clock> now = 
 		        std::chrono::system_clock::now();
 	    auto duration = now.time_since_epoch();
 	    auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
-	    cv::imwrite(std::to_string(millis)+".jpg", clip_original);
-	    std::cout << "estou executando" << std::endl;
+	    cv::imwrite(std::to_string(millis)+".jpg", clip_original);*/
+	    std::cout << "estou executando2" << std::endl;
 
             drd.channels = clip_original.channels();
             std::vector<cv::Mat> chans;

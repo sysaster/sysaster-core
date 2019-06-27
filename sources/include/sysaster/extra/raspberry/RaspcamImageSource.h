@@ -2,9 +2,10 @@
 #define _RASP_SOURCE_
 
 #include "sysaster/core/imgsource/ImageSource.h"
-//#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/core/core.hpp"
+#include "opencv2/highgui/highgui.hpp"
 //#include "opencv2/videoio.hpp"
-#include "opencv2/opencv.hpp"
 #include "sysaster/common.h"
 
 class RaspcamImageSource : public ImageSource {
@@ -19,7 +20,8 @@ class RaspcamImageSource : public ImageSource {
         bool establish() override {
             videocapture = cv::VideoCapture(url);
 	    if (videocapture.isOpened()) {
-		videocapture.set(CV_CAP_PROP_BUFFERSIZE, 1);
+            std::cout << videocapture.get(5) << std::endl;
+            videocapture.set(38, 1);
 	    }
             return videocapture.isOpened();
         }
@@ -27,6 +29,7 @@ class RaspcamImageSource : public ImageSource {
         bool get_image(cv::Mat& image) override {
             cv::Mat img;
             bool r = videocapture.read(img);
+            if (img.empty()) return false;
             image = img.clone();
             return r;
         }
