@@ -16,8 +16,8 @@ void to_json(json& j, const DetectionResultData& d) {
                 }
             },
             {"time_ms", d.time_ms},
-            {"latitude", d.latitude},
-            {"longitude", d.longitude},
+            {"latitude", std::to_string(d.latitude)},
+            {"longitude", std::to_string(d.longitude)},
         };
 
     if (d.clipped_image != nullptr) {

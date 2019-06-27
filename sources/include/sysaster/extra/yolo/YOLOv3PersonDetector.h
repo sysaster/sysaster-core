@@ -91,7 +91,7 @@ class YOLOv3PersonDetector : public PersonDetector {
                     std::chrono::system_clock::now();
             auto duration = now.time_since_epoch();
             auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
-            cv::imwrite(std::to_string(millis)+".jpg", clip_original);
+            cv::imwrite(std::to_string(millis)+"_"+classes[classId]+".jpg", clip_original);
 
             drd.channels = clip_original.channels();
             std::vector<cv::Mat> chans;
@@ -148,7 +148,7 @@ class YOLOv3PersonDetector : public PersonDetector {
                 cv::Rect box = boxes[idx];
                 std::string class_name = classes[classIds[idx]];
                 std::cout << "[sysaster INFO] Found a " << class_name << std::endl;
-                if (class_name == "person" || class_name=="bicycle") {
+                if (class_name=="bicycle") {
                     save_pred(classIds[idx], confidences[idx], box, classes, frame, detect_data_results);
                 }
             }

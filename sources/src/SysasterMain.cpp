@@ -4,6 +4,7 @@
 #include "sysaster/extra/tello/TelloImageSource.h"
 #include "sysaster/core/imgsource/StaticImageSource.h"
 #include "sysaster/extra/yolo/YOLOv3PersonDetector.h"
+#include "sysaster/core/dao/SQLite3DetectionDAO.h"
 
 int main(int argn, char* args[]) {
 
@@ -36,6 +37,9 @@ int main(int argn, char* args[]) {
                 false, 
                 std::stof(sysaster::settings->extra["response_timeout"])
                 );
+    
+    //> Instantiate SQLite DAO
+    sysaster::detection_dao = std::make_shared<SQLite3DetectionDAO>("sysaster.db");
     
     //> Instantiate ConnectionThreadDispatcher
     sysaster::connection_dispatcher = std::make_shared<ConnectionThreadDispatcher>();
