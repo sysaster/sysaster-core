@@ -23,6 +23,8 @@ class ImageRequestor {
 
     public:
 
+        ImageRequestor() {}
+
         ImageRequestor(const std::shared_ptr<ImageSource> image_source,
                 const std::shared_ptr<ImageThreadDispatcher> image_dispatcher) 
             : image_source {image_source}, image_dispatcher {image_dispatcher}
@@ -31,7 +33,7 @@ class ImageRequestor {
         /**
          * Main loop.
          * */
-        void require() const {
+        virtual void require() const {
             while(true) {
                 cv::Mat img;
                 if (image_source->get(img)) {

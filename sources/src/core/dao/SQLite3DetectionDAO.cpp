@@ -49,7 +49,7 @@ int SQLite3DetectionDAO::insert_detection(const DetectionResultData& detection) 
             "bbox_c,"
             "confidence,"
             "time_ms,"
-            "crop_b64,"
+            //"crop_b64,"
             "crop_b64_size"           
         ") VALUES (" +
            quotesql(std::to_string(detection.id_frame)) + "," +
@@ -62,7 +62,7 @@ int SQLite3DetectionDAO::insert_detection(const DetectionResultData& detection) 
            quotesql(std::to_string(detection.channels)) +"," +
            quotesql(std::to_string(detection.confidence)) +"," +
            quotesql(std::to_string(detection.time_ms)) +"," +
-           quotesql(std::string(detection.clipped_image)) +"," +
+           //quotesql(std::string(detection.clipped_image)) +"," +
            quotesql(std::to_string(detection.clipped_image_size)) +
         ");";
 

@@ -48,6 +48,8 @@ void from_json(const json& j, Settings& s) {
     s.connection_pool_size = j["connection"]["pool_size"];
     s.server_url = j["connection"]["server_url"];
     s.server_endpoint = j["connection"]["server_endpoint"];
+
+    s.sync = j.value("sync", false);
 }
 
 class JSONSettingsParser {

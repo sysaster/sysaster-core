@@ -1,0 +1,22 @@
+{
+    "image_source": {
+        "type": "raspcam",
+        "interval": 1,
+	"url": "http://192.168.1.108:8080/?action=stream"
+    },
+    "detection": {
+        "type": "yolov3",
+        "pool_size": 1,
+        "file_config": "/home/pi/sysaster-core/configs/files/yolov3-tiny.cfg",
+        "file_weights": "/home/pi/sysaster-core/configs/files/yolov3-tiny.weights",
+        "file_class_names": "/home/pi/sysaster-core/configs/files/coco.names"
+    },
+    "connection": {
+        "server_url": "http://10.7.152.15:4000",
+        "server_endpoint": "/detections",
+        "pool_size": 1
+    },
+    "topic": {
+    	"code": "embarcados"
+    }
+}

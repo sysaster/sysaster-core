@@ -27,6 +27,7 @@ struct Settings {
     std::string image_source_url;
     int image_source_interval {1};
     std::string topic;
+    bool sync = false;
 
     std::map<std::string, std::string> extra;
 };

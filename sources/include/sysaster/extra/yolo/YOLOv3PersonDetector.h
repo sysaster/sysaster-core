@@ -10,6 +10,8 @@
 
 #define INP_WIDTH 416
 #define INP_HEIGHT 416
+//#define CONF_THRESHOLD 0.1
+//#define NMS_THRESHOLD 0.3
 #define CONF_THRESHOLD 0.1
 #define NMS_THRESHOLD 0.3
 
@@ -58,11 +60,21 @@ class YOLOv3PersonDetector : public PersonDetector {
             return names;
         }
 
-        void save_pred(int classId, float conf, const cv::Rect& box, 
+        void save_pred(int classId, float conf, const cv::Rect& _box, 
                 const std::vector<std::string> & classes,
                 const cv::Mat& frame,
                 std::vector<DetectionResultData>& detect_data_results) const {
         
+            /*int x = 0, y = 0, w = 0, h = 0;
+            x = std::max(0, _box.x);
+            y = std::max(0, _box.y);
+            w = std::min(_box.width + _box.x, frame.cols - _box.x);
+            h = std::min(_box.height + _box.y, frame.rows - _box.y);
+
+            cv::Rect box (x, y, w, h);*/
+
+            cv::Rect box = _box & cv::Rect(0, 0, frame.cols, frame.rows);
+            
             DetectionResultData drd;
 
             drd.x = box.x;
@@ -73,13 +85,13 @@ class YOLOv3PersonDetector : public PersonDetector {
 
             //> Crop and separate channels
             auto clip_original = frame(box);
+            //cv::resize(clip_original, clip_original, cv::Size(0, 0), 0.5, 0.5);
 
-	    std::chrono::time_point<std::chrono::system_clock> now = 
-		        std::chrono::system_clock::now();
-	    auto duration = now.time_since_epoch();
-	    auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
-	    cv::imwrite(std::to_string(millis)+".jpg", clip_original);
-	    std::cout << "estou executando" << std::endl;
+            std::chrono::time_point<std::chrono::system_clock> now = 
+                    std::chrono::system_clock::now();
+            auto duration = now.time_since_epoch();
+            auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+            cv::imwrite(std::to_string(millis)+"_"+classes[classId]+".jpg", clip_original);
 
             drd.channels = clip_original.channels();
             std::vector<cv::Mat> chans;
@@ -134,8 +146,11 @@ class YOLOv3PersonDetector : public PersonDetector {
             for(size_t i = 0; i < indices.size(); ++i){
                 int idx = indices[i];
                 cv::Rect box = boxes[idx];
-		std::cout << "class " << classes[classIds[idx]] << std::endl;
-                save_pred(classIds[idx], confidences[idx], box, classes, frame, detect_data_results);
+                std::string class_name = classes[classIds[idx]];
+                std::cout << "[sysaster INFO] Found a " << class_name << std::endl;
+                if (class_name=="bicycle") {
+                    save_pred(classIds[idx], confidences[idx], box, classes, frame, detect_data_results);
+                }
             }
         }
 
@@ -202,6 +217,7 @@ class YOLOv3PersonDetector : public PersonDetector {
             //> Run inference
             std::vector<cv::Mat> rect_results;
             net.forward(rect_results, this->get_output_names());
+
 
             //> Post process
             post_process(image, rect_results, detect_data_results);
