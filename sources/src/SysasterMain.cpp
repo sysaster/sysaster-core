@@ -5,6 +5,7 @@
 #include "sysaster/core/imgsource/StaticImageSource.h"
 #include "sysaster/extra/yolo/YOLOv3PersonDetector.h"
 #include "sysaster/core/dao/SQLite3DetectionDAO.h"
+#include "sysaster/core/imgsource/ImageRequestorSync.h"
 
 int main(int argn, char* args[]) {
 
@@ -48,7 +49,11 @@ int main(int argn, char* args[]) {
     std::shared_ptr<ImageThreadDispatcher> imgThreDispat = std::make_shared<ImageThreadDispatcher>();
 
     //> Instantiate ImageRequestor
-    std::shared_ptr<ImageRequestor> imgRequestor = std::make_shared<ImageRequestor>(imgSource, imgThreDispat);
+    std::shared_ptr<ImageRequestor> imgRequestor;
+    if (sysaster::settings->sync)
+        imgRequestor = std::make_shared<ImageRequestorSync>(imgSource);
+    else
+        imgRequestor = std::make_shared<ImageRequestor>(imgSource, imgThreDispat);
 
     //> Instantiate PersonDetector
     if (sysaster::settings->detector_type == Settings::DetectorType::YOLOV3) {

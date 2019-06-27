@@ -1,4 +1,5 @@
 {
+    "sync": true,
     "image_source": {
         "type": "raspcam",
         "interval": 3,
